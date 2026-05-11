@@ -1,0 +1,6 @@
+#!/bin/bash
+cd /home/weemb/cortex
+source venv/bin/activate
+export PYTHONPATH=/home/weemb/cortex
+python3 core/oracle.py >> var/log/oracle.log 2>&1 &
+exec python3 srv/main.py

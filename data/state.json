@@ -1,0 +1,11 @@
+{
+  "timestamp": "2026-05-11T21:30:09.598818",
+  "world": {
+    "h_index": 3.55,
+    "crisis_level": 87
+  },
+  "economy": {
+    "gold": 2355.4,
+    "btc": 64100.0
+  }
+}
