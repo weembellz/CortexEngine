@@ -1,0 +1,11 @@
+fastapi==0.110.0
+uvicorn[standard]==0.28.0
+aiofiles==23.2.1
+requests==2.31.0
+watchdog==4.0.0
+ollama==0.1.7
+google-auth==2.28.2
+google-auth-oauthlib==1.2.0
+google-api-python-client==2.122.0
+pydantic==2.6.4
+websockets==12.0
