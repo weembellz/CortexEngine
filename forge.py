@@ -15,13 +15,10 @@ def obtener_ip():
     except Exception:
         return "127.0.0.1"
 
-# Asegurar que el directorio de salida existe
 OUTPUT_FILE.parent.mkdir(parents=True, exist_ok=True)
-
 print("[FORGE] Motor de renderizado de la interfaz operativa iniciado.")
 
 while True:
-    # Avanzar el reloj determinista del motor de reglas
     if Path("/home/weemb/cortex/event_engine.py").exists():
         os.system("python3 /home/weemb/cortex/event_engine.py")
     
@@ -61,7 +58,7 @@ while True:
         async function enviarVoto(accion) {{
             await fetch('/api/v1/simulation/vote', {{
                 method: 'POST',
-                headers: {{'Content-Type': 'application/json'}},
+                headers: {{Content-Type: application/json}},
                 body: JSON.stringify({{voto_index: accion}})
             }});
             setTimeout(() => location.reload(), 500);
