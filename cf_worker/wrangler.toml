@@ -1,6 +1,6 @@
-name = "paisenobras-proxy"
+name = "pais-en-obras"
 main = "worker.js"
-compatibility_date = "2026-05-17"
+compatibility_date = "2024-12-18"
 
 [[d1_databases]]
 binding = "paisenobras_db"

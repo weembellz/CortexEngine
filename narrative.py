@@ -1,46 +1,47 @@
 #!/usr/bin/env python3
-import json
 import http.client
-from pathlib import Path
+import json
 
-STATE_JSON = Path("/home/weemb/cortex/world_state.json")
+OLLAMA_HOST = "127.0.0.1"
+OLLAMA_PORT = 11434
+MODEL_NAME = "llama3.2:latest"
 
-def consultar_ollama(prompt):
+def generar_noticia_sistemica(tipo_evento, contexto):
+    prompt = f"""
+    Eres el motor narrativo de la interfaz operativa 'Pais en Obras'.
+    Genera un flash de prensa distopico basado en esta alteracion macro. No uses emojis.
+    
+    Evento: {tipo_evento}
+    Metricas: {json.dumps(contexto)}
+    
+    Devuelve UNICAMENTE un objeto JSON plano sin textos extras:
+    {{
+      "titular": "TITULAR EN MAYUSCULAS",
+      "impacto": "Consecuencia en la calle (maximo 15 palabras)"
+    }}
+    """
+    
+    payload = {
+        "model": MODEL_NAME,
+        "prompt": prompt,
+        "stream": False,
+        "format": "json"
+    }
+    
     try:
-        conn = http.client.HTTPConnection("localhost", 11434)
-        payload = json.dumps({
-            "model": "llama3",
-            "prompt": prompt,
-            "stream": False,
-            "system": "Eres el locutor de noticias de la matriz geopolítica Cortex OS. Redacta titulares fríos, concisos y de alta densidad periodística al estilo ciberpunk."
-        })
-        headers = {'Content-Type': 'application/json'}
-        conn.request("POST", "/api/generate", payload, headers)
-        res = conn.getresponse()
-        data = res.read()
-        return json.loads(data.decode("utf-8"))["response"].strip()
+        conn = http.client.HTTPConnection(OLLAMA_HOST, OLLAMA_PORT, timeout=30)
+        conn.request("POST", "/api/generate", json.dumps(payload), {"Content-Type": "application/json"})
+        resp = conn.getresponse()
+        if resp.status == 200:
+            raw = json.loads(resp.read().decode())
+            narrativa = json.loads(raw.get("response", "{}"))
+            conn.close()
+            return narrativa
+        conn.close()
     except Exception:
-        return "ALERTA SINTÉTICA: Variación paramétrica detectada en el algoritmo nacional."
-
-if STATE_JSON.exists():
-    with open(STATE_JSON, "r", encoding="utf-8") as f:
-        st = json.load(f)
+        pass
     
-    # Extraer variables contextuales para alimentar el prompt de la IA
-    regimen = st["simulation"]["regimen_actual"]
-    deuda = st["simulation"]["deuda_publica_pct"]
-    licitacion = st["yield"]["subvenciones"]["ultima_licitacion"]
-    
-    prompt_noticia = f"Genera una única noticia urgente basada en este estado real: Régimen: {regimen}. Deuda: {deuda}%. Última licitación detectada en el BOE: {licitacion}. Máximo 20 palabras."
-    
-    nueva_noticia = consultar_ollama(prompt_noticia)
-    
-    # Inyectar la noticia generada en el feed histórico de simulación
-    st["simulation"]["chat_log"].append({"sender": "Cortex-News", "message": nueva_noticia})
-    
-    # Mantener solo los últimos 10 eventos en memoria para evitar saturación del JSON
-    st["simulation"]["chat_log"] = st["simulation"]["chat_log"][-10:]
-    
-    with open(STATE_JSON, "w", encoding="utf-8") as f:
-        json.dump(st, f, indent=2)
-    print(f"[NARRATIVE] Nueva crónica inyectada: {nueva_noticia}")
+    return {
+        "titular": f"ALERTA PERIMETRAL: SISTEMA MODIFICADO POR {tipo_evento.upper()}",
+        "impacto": "Los flujos procedurales del nucleo registraron variaciones de control."
+    }

@@ -1,1 +1,261 @@
-<!DOCTYPE html><html lang='es'><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width, initial-scale=1.0'><title>PAÍS EN OBRAS v3.0 - Reality OS</title><style>body { font-family: monospace; background: #fafafa; color: #000; margin: 15px; font-size: 12px; } .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; } .card { background: #fff; border: 2px solid #000; padding: 15px; box-shadow: 4px 4px 0px #000; } .stats { font-size: 13px; font-weight: bold; background: #e2e2e2; padding: 10px; border: 2px solid #000; display: flex; justify-content: space-between; flex-wrap: wrap; } .btn { background: #000; color: #fff; border: none; padding: 12px; width: 100%; font-family: monospace; font-weight: bold; cursor: pointer; text-transform: uppercase; margin-bottom: 8px; font-size: 11px; border-radius: 4px; } .btn.danger { background: #ff4d4d; color: #000; } iframe { width: 100%; height: 200px; border: 2px solid #000; } ul { list-style: none; padding: 5px; background: #eee; border: 1px solid #000; max-height: 100px; overflow-y: auto; } table { width: 100%; border-collapse: collapse; margin-top: 10px; } th, td { border: 1px solid #000; padding: 4px; font-size:10px; } th { background: #ddd; } @media(max-width: 768px) { .grid { grid-template-columns: 1fr; } }</style><script>async function vote(i){await fetch('/api/v1/simulation/vote',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({vote_index:i==0?'subir_iva':i==1?'recortar_sanidad':'ejecutar_golpe'})});setTimeout(()=>location.reload(),400);}</script></head><body><div class='card'><h2>PAÍS EN OBRAS · INTERFAZ MULTIJUGADOR TOTAL v3.0</h2><p>Servidor: Anna Armengol Hallado | IP VPN: 192.168.1.38 | Padrón: Ciutadilla | Acceso Universal: Web/iPad/Móvil</p></div><div class='stats'><span>RÉGIMEN: Democracia Parlamentaria en Obras</span><span>DEUDA: 121.29%</span><span>RIESGO GOLPE: 0.0%</span></div><div class='card' style='margin-top:15px; background:#f0fdf4; border-color:#16a34a;'><h4>VINCULACIÓN PROCEDURAL CON MOTOR GRÁFICO (UE5 / GODOT DOCK)</h4><p style='font-size:11px;'>• H-INDEX (FOV / Color): <b>3.13</b> | • CHAOS MULTIPLIER (Físicas): <b>0.5</b> | • FOG DENSITY (Niebla): <b>0.38</b></p></div><div class='grid'><div class='card'><h3>GAMEPLAY MACROECONÓMICO: CONTROL DEL ESTADO</h3><button class='btn' onclick='vote(0)'>Subir IVA (+Corrupción, -Deuda Pública)</button><button class='btn' onclick='vote(1)'>Recortar Sanidad (+Riesgo de Golpe de Estado)</button><button class='btn danger' onclick='vote(2)'>FORZAR ACCIÓN: EJECUTAR GOLPE DE ESTADO</button><h4>WORLD FEED / LOG NARRATIVO DEL JUEGO</h4><ul><li><b>[Cortex-News]</b>: ALERTA SINTÉTICA: Variación paramétrica detectada en el algoritmo nacional.</li><li><b>[Sistema]</b>: Reality OS Core v3.0 arriba.</li></ul></div><div class='card'><h3>REALITY FEED & CAPA FIDUCIARIA</h3><iframe src='https://youtube.com' allowfullscreen></iframe><p style='margin-top:8px;font-size:10px;word-break:break-all;'><b>Tattoos Marketplace (RTX 3060):</b> 14 ítems listos | Base: 0.04 XMR</p><table><thead><tr><th>OBJ</th><th>Inmueble / Ruina Rural</th><th>Provincia</th><th>Viabilidad</th></tr></thead><tbody><tr><td>OBJ-001</td><td>Iglesia abandonada</td><td>Zaragoza</td><td>68.5%</td></tr><tr><td>OBJ-002</td><td>Fabrica industrial</td><td>Asturias</td><td>74.2%</td></tr></tbody></table></div></div></body></html>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>PAÍS EN OBRAS // CENTRO NERVIOSO v5.0</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #000000; color: #FFFFFF; font-family: 'JetBrains Mono', monospace; text-transform: uppercase; }
+        .text-gold { color: #D4AF37; }
+        .border-gold { border-color: #D4AF37; }
+        .panel-military { border: 1px solid #222222; background-color: #050505; }
+        ::-webkit-scrollbar { display: none; }
+        canvas { display: block; width: 100%; height: auto; background: #000; border: 1px solid #222; }
+    </style>
+</head>
+<body class="min-h-screen p-6 flex flex-col justify-between tracking-wider text-xs">
+
+    <!-- CABECERA -->
+    <header class="w-full flex justify-between items-baseline border-b border-[#222] pb-4 mb-6">
+        <div>
+            <h1 class="text-sm font-black text-white tracking-widest text-gold">PAÍS EN OBRAS // CORE_v5.0</h1>
+            <p class="text-[9px] text-gray-500">UNIX PHILOSOPHY · SINGLE SOURCE OF TRUTH</p>
+        </div>
+        <div class="text-right text-[10px] text-gray-500">
+            NODO: TÀRREGA (CAT) · <span id="clock" class="text-white">--:--:--</span>
+        </div>
+    </header>
+
+    <!-- CUADRÍCULA PRINCIPAL 3 COLUMNAS -->
+    <main class="grid grid-cols-1 lg:grid-cols-3 gap-6 flex-grow mb-6">
+
+        <!-- COLUMNA 1: REALITY FEED (NOTICIAS) -->
+        <div class="panel-military p-4">
+            <div class="border-b border-[#222] pb-2 mb-4 text-gold font-bold">01 // REALITY ENGINE</div>
+            <div id="feed-box" class="text-white whitespace-pre-wrap text-[11px] leading-relaxed">
+                [SISTEMA EN REPOSO ESTÁTICO]
+            </div>
+            <div class="mt-4 pt-3 border-t border-[#222]">
+                <div class="grid grid-cols-2 gap-2 text-[10px]">
+                    <div><span class="text-gray-500">DEUDA</span><br><span id="deuda-val" class="text-gold font-bold">0%</span></div>
+                    <div><span class="text-gray-500">DESEMPLEO</span><br><span id="desempleo-val" class="text-gold font-bold">0%</span></div>
+                    <div><span class="text-gray-500">APROBACIÓN</span><br><span id="aprobacion-val" class="text-gold font-bold">0%</span></div>
+                    <div><span class="text-gray-500">CORRUPCIÓN</span><br><span id="corrupcion-val" class="text-gold font-bold">0%</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- COLUMNA 2: SISMÓGRAFO + ACCIONES -->
+        <div class="panel-military p-4 flex flex-col justify-between">
+            <div>
+                <div class="border-b border-[#222] pb-2 mb-4 flex justify-between items-center">
+                    <span class="text-gold font-bold">02 // CHAOS PLOTTER</span>
+                    <span id="regimen-badge" class="text-[9px] bg-black text-gold px-2 py-0.5 border border-gold">DEMOCRACIA_DEBIL</span>
+                </div>
+                <canvas id="chaosCanvas" width="600" height="140" style="height:140px; width:100%"></canvas>
+                <div class="grid grid-cols-3 gap-3 my-4 text-center">
+                    <div><span class="text-gray-500 text-[9px]">H-INDEX</span><br><span id="hindex-val" class="text-gold font-bold">0.00</span></div>
+                    <div><span class="text-gray-500 text-[9px]">CHAOS</span><br><span id="chaos-val" class="text-red-500 font-bold">0.00</span></div>
+                    <div><span class="text-gray-500 text-[9px]">CRISIS</span><br><span id="crisis-val" class="text-gold font-bold">0</span></div>
+                </div>
+            </div>
+            <div class="space-y-2 mt-2">
+                <button onclick="triggerAction('subir_iva')" class="w-full bg-[#111] hover:bg-[#1a1a1a] border border-[#333] text-gold font-bold py-2 text-[10px]">EJECUTAR: SUBIR IVA</button>
+                <button onclick="triggerAction('recortar_sanidad')" class="w-full bg-[#111] hover:bg-[#1a1a1a] border border-[#333] text-gold font-bold py-2 text-[10px]">EJECUTAR: RECORTE SANIDAD</button>
+                <button onclick="triggerAction('ejecutar_golpe')" class="w-full bg-red-950 hover:bg-red-900 border border-red-800 text-white font-bold py-2 text-[10px]">FORZAR: GOLPE DE ESTADO</button>
+            </div>
+        </div>
+
+        <!-- COLUMNA 3: LIFE OS (DATOS REALES) -->
+        <div class="panel-military p-4">
+            <div class="border-b border-[#222] pb-2 mb-4 text-gold font-bold">03 // LIFE OS · OPERADOR LOCAL</div>
+            <div class="space-y-2 text-[11px]">
+                <div><span class="text-gray-500">MUNICIPIO:</span> <span class="text-white font-bold">Tàrrega</span></div>
+                <div><span class="text-gray-500">PADRÓN:</span> <span id="padron-val" class="text-red-500 font-bold">Pendiente Presencial</span></div>
+                <div><span class="text-gray-500">AYUDAS SOLICITADAS:</span> <span class="text-white">RGC+IMV+Alquiler</span></div>
+                <div class="border-t border-[#222] pt-2 mt-2">
+                    <span class="text-gray-500">ALQUILER REAL:</span> <span id="alquiler-val" class="text-gold font-bold">368.45€</span><br>
+                    <span class="text-gray-500">SUMINISTROS:</span> <span class="text-white font-bold">15.00€</span>
+                </div>
+                <div class="border-t border-[#222] pt-2 mt-1">
+                    <span class="text-gray-500">TERRARIO SEFA:</span> <span id="sefa-val" class="text-green-500">Monitoreando</span><br>
+                    <span class="text-gray-500">ASSETS TATTOO:</span> <span id="tattoos-val" class="text-white">48</span><br>
+                    <span class="text-gray-500">PRECIO BASE (XMR):</span> <span id="xmr-val" class="text-gold">0.15</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER CON ESTADO DE RED -->
+    <footer class="w-full text-center text-[9px] text-gray-700 border-t border-[#222] pt-3 font-mono flex justify-between">
+        <span>API: <span id="latency">-- ms</span></span>
+        <span>WS VOICE: <span id="ws-status" class="text-red-500">OFFLINE</span></span>
+        <span><span id="audio-status" class="text-green-500">⚡ GEIGER INACTIVO</span></span>
+    </footer>
+
+    <script>
+        // ---------- VARIABLES GLOBALES ----------
+        const API_URL = `http://${window.location.hostname}:5005/api/v1/state`;
+        const VOTE_URL = `http://${window.location.hostname}:5005/api/v1/simulation/vote`;
+        let audioCtx = null;
+        let geigerInterval = null;
+        let currentChaos = 0.55;
+        let ws = null;
+
+        // ---------- RELOJ ----------
+        setInterval(() => {
+            const now = new Date();
+            document.getElementById('clock').innerText = now.toLocaleTimeString('es-ES', { hour12: false });
+        }, 200);
+
+        // ---------- SISMÓGRAFO (CANVAS) ----------
+        const canvas = document.getElementById('chaosCanvas');
+        const ctx = canvas.getContext('2d');
+        let history = Array(60).fill(0.5);
+        function resizeCanvas() {
+            const w = canvas.parentElement.clientWidth - 20;
+            canvas.width = w;
+            canvas.height = 140;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        function drawChaos(value) {
+            history.push(value);
+            if (history.length > 60) history.shift();
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.beginPath();
+            ctx.strokeStyle = '#D4AF37';
+            ctx.lineWidth = 1.5;
+            const step = canvas.width / (history.length - 1);
+            for (let i = 0; i < history.length; i++) {
+                const x = i * step;
+                const y = canvas.height - (history[i] * canvas.height);
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+        }
+
+        // ---------- AUDIO GEIGER (OPCIONAL) ----------
+        function initAudio() {
+            if (audioCtx) return;
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            function geigerClick() {
+                if (!audioCtx) return;
+                const now = audioCtx.currentTime;
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.value = 1200;
+                gain.gain.setValueAtTime(0.06, now);
+                gain.gain.exponentialRampToValueAtTime(0.00001, now + 0.08);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(now + 0.08);
+            }
+            function startGeiger() {
+                if (geigerInterval) clearInterval(geigerInterval);
+                const loop = () => {
+                    const delay = Math.max(200, Math.min(1500, 1500 - (currentChaos * 1200)));
+                    geigerClick();
+                    geigerInterval = setTimeout(loop, delay);
+                };
+                loop();
+            }
+            audioCtx.resume().then(() => {
+                document.getElementById('audio-status').innerHTML = '🔊 GEIGER ACTIVO';
+                startGeiger();
+            });
+        }
+        // Botón para activar audio (por políticas del navegador)
+        window.addEventListener('load', () => {
+            const btn = document.createElement('button');
+            btn.innerText = 'ACTIVAR GEIGER';
+            btn.style.position = 'fixed'; btn.style.bottom = '20px'; btn.style.right = '20px';
+            btn.style.zIndex = '9999'; btn.style.background = '#111'; btn.style.border = '1px solid #D4AF37';
+            btn.style.color = '#D4AF37'; btn.style.fontSize = '9px'; btn.style.padding = '4px 8px';
+            btn.onclick = () => { initAudio(); btn.remove(); };
+            document.body.appendChild(btn);
+        });
+
+        // ---------- FETCH ESTADO ----------
+        async function fetchState() {
+            const start = performance.now();
+            try {
+                const res = await fetch(API_URL);
+                const data = await res.json();
+                const latency = Math.round(performance.now() - start);
+                document.getElementById('latency').innerText = latency + ' ms';
+                if (data.success && data.world_state) {
+                    const w = data.world_state;
+                    // Métricas macro
+                    document.getElementById('deuda-val').innerText = w.economy.deuda_publica_pct + '%';
+                    document.getElementById('desempleo-val').innerText = w.economy.unemployment_rate_pct + '%';
+                    document.getElementById('aprobacion-val').innerText = w.economy.approval_rating_pct + '%';
+                    document.getElementById('corrupcion-val').innerText = w.economy.corruption_index_pct + '%';
+                    document.getElementById('hindex-val').innerText = w.world.h_index.toFixed(2);
+                    document.getElementById('chaos-val').innerText = w.world.chaos.toFixed(2);
+                    document.getElementById('crisis-val').innerText = w.economy.active_crises;
+                    document.getElementById('regimen-badge').innerText = w.economy.regimen_actual;
+                    currentChaos = w.world.chaos;
+                    drawChaos(currentChaos);
+
+                    // Life OS
+                    const lo = w.life_os;
+                    document.getElementById('padron-val').innerText = lo.operador_local.empadronamiento;
+                    document.getElementById('alquiler-val').innerText = lo.gastos_reales.alquiler_total_real.toFixed(2) + '€';
+                    document.getElementById('sefa-val').innerText = lo.terrario_sefa.status;
+                    document.getElementById('tattoos-val').innerText = lo.yield_tattoos.assets_count;
+                    document.getElementById('xmr-val').innerText = lo.yield_tattoos.precio_base_xmr.toFixed(3);
+
+                    // Feed de noticias
+                    const feedDiv = document.getElementById('feed-box');
+                    feedDiv.innerHTML = `<div class="border-l-2 border-gold pl-2 py-1">
+                        <div class="font-bold text-white text-[11px]">${w.news_feed.titular}</div>
+                        <div class="text-gray-400 text-[9px] mt-1">${w.news_feed.impacto}</div>
+                    </div>`;
+                }
+            } catch(e) {
+                document.getElementById('latency').innerText = 'ERR';
+                console.error(e);
+            }
+        }
+
+        // ---------- ENVÍO DE VOTOS ----------
+        async function triggerAction(action) {
+            try {
+                await fetch(VOTE_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ voto_index: action })
+                });
+                setTimeout(fetchState, 500);
+            } catch(e) { console.error(e); }
+        }
+
+        // ---------- WEBSOCKET VOICE (ECO) ----------
+        function connectWS() {
+            const proto = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            ws = new WebSocket(`${proto}//${location.host}/ws/v1/voice`);
+            ws.onopen = () => {
+                document.getElementById('ws-status').innerHTML = 'CONECTADO';
+                document.getElementById('ws-status').classList.remove('text-red-500');
+                document.getElementById('ws-status').classList.add('text-green-500');
+            };
+            ws.onclose = () => {
+                document.getElementById('ws-status').innerHTML = 'OFFLINE';
+                document.getElementById('ws-status').classList.add('text-red-500');
+                setTimeout(connectWS, 3000);
+            };
+            ws.onerror = () => console.error('WS error');
+        }
+
+        // ---------- INICIO ----------
+        fetchState();
+        setInterval(fetchState, 3000);
+        connectWS();
+    </script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+{
+  "timestamp": "2026-05-17T22:00:00Z",
+  "world": {
+    "h_index": 7.42,
+    "chaos": 0.55,
+    "gravity": 9.81,
+    "fog_density": 0.45
+  },
+  "economy": {
+    "capital_eur": 0,
+    "active_crises": 1,
+    "deuda_publica_pct": 113.2,
+    "unemployment_rate_pct": 11.7,
+    "corruption_index_pct": 75.0,
+    "regimen_actual": "DEMOCRACIA_DEBIL"
+  },
+  "life_os": {
+    "operador_local": {
+      "municipio": "Tàrrega",
+      "empadronamiento": "Pendiente Presencial",
+      "cobertura_solicitada": "RGC+IMV+Ayuda Alquiler"
+    },
+    "gastos_reales": {
+      "alquiler_total_real": 368.45
+    },
+    "terrario_sefa": {
+      "status": "Monitoreando",
+      "especie": "Lampropeltis californiae"
+    },
+    "yield_tattoos": {
+      "assets_count": 48,
+      "precio_base_xmr": 0.15
+    }
+  },
+  "news_feed": {
+    "titular": "ARQUITECTURA CANÓNICA SELLADA",
+    "impacto": "Fuente de verdad unificada en var/world/params.json"
+  }
+}

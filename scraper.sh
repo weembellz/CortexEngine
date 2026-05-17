@@ -1,23 +1,31 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-STATE_JSON="/home/weemb/cortex/world_state.json"
-LOG_FILE="/home/weemb/cortex/logs/scraper.log"
+echo "[*] Escaneando publicaciones oficiales del BOE..."
 
-echo "[$(date '+%Y-%m-%d %H:%M:%S')] Iniciando escaneo del BOE..." >> "$LOG_FILE"
+FECHA_HOY=$(date +%Y%m%d)
+FEED_URL="https://boe.es{FECHA_HOY}"
+RAW_XML=$(curl -s -L --connect-timeout 5 "${FEED_URL}" || echo "")
 
-# Simulación de extracción atómica mediante API o curl crudo filtrado con jq
-# En producción, aquí meterás tu token o endpoint específico de filtrado
-ULTIMA_LICITACION="Ayuda estatal digitalización infraestructuras BOE - $(date +%d/%m/%m)"
-PARTIDA_EUROS=12500.0
+WORKER_URL="https://workers.dev"
 
-if [ -f "$STATE_JSON" ]; then
-    # Actualizar world_state.json de forma segura usando un archivo temporal
-    jq --arg lic "$ULTIMA_LICITACION" --argjsoneur "$PARTIDA_EUROS" \
-    '.yield.subvenciones.ultima_licitacion = $lic | .yield.subvenciones.partida_euros = $eur | .yield.subvenciones.estado = "APLICABLE"' \
-    "$STATE_JSON" > "${STATE_JSON}.tmp" && mv "${STATE_JSON}.tmp" "$STATE_JSON"
+if [ -z "${RAW_XML}" ] || echo "${RAW_XML}" | grep -q "Error"; then
+    echo "[!] El BOE no ha publicado hoy o el servicio no esta disponible."
+    echo "[*] Inyectando pulso preventivo de rutina en D1 remota..."
     
-    echo "[$(date '+%Y-%m-%d %H:%M:%S')] Scraper completado. world_state.json actualizado." >> "$LOG_FILE"
+    curl -s -L -X POST "${WORKER_URL}" \
+      -H "Content-Type: application/json" \
+      -d '{"type":"world_state","key":"news_feed","value":"{\"titular\":\"SISTEMA EN ESPERA: FIN DE SEMANA\",\"impacto\":\"El nucleo perimetral mantiene el control preventivo sin alertas oficiales de ley.\"}"}'
 else
-    echo "[$(date '+%Y-%m-%d %H:%M:%S')] ERROR: No se encontró world_state.json" >> "$LOG_FILE"
+    # Filtrar leyes del día
+    TITULO=$(echo "${RAW_XML}" | grep -oP '(?<=<titulo>).*?(?=</titulo>)' | grep -E -i "vivienda|decreto|medidas|urgentes|fiscal|presupuesto" | head -n 1 || echo "")
+    if [ -z "${TITULO}" ]; then
+        echo "[*] No se detectan reformas criticas hoy. Pulsando rutina..."
+        curl -s -L -X POST "${WORKER_URL}" \
+          -H "Content-Type: application/json" \
+          -d '{"type":"world_state","key":"news_feed","value":"{\"titular\":\"MONITOREO DE RUTINA: SIN ALERTAS\",\"impacto\":\"No se han detectado publicaciones de riesgo presupuestario en el BOE.\"}"}'
+    else
+        echo "[+] Publicacion detectada: ${TITULO}"
+        python3 /home/weemb/cortex/core/event_engine.py "recortar_sanidad"
+    fi
 fi
