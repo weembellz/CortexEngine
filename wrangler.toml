@@ -1,4 +1,8 @@
-name = "pais-en-obras"
+name = "paisenobras-proxy"
 main = "worker.js"
 compatibility_date = "2026-05-17"
-workers_dev = true
+
+[[d1_databases]]
+binding = "paisenobras_db"
+database_name = "paisenobras-db"
+database_id = "97f82682-eb2f-4e4d-908b-948b3aae6a83"
