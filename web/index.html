@@ -1,1 +1,60 @@
-<!DOCTYPE html><html lang='es'><head><meta charset='UTF-8'><title>Cortex OS v3.0</title><link rel='stylesheet' href='https://unpkg.com' /><style>:root { --bg: #f8fafc; --card: #ffffff; --text: #0f172a; --border: #e2e8f0; --primary: #2563eb; --danger: #dc2626; } * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, sans-serif; color: var(--text); } body { background: var(--bg); padding: 20px; display: flex; flex-direction: column; height: 100vh; overflow: hidden; } header { background: var(--card); border: 1px solid var(--border); padding: 14px; margin-bottom: 16px; border-radius: 6px; display: flex; justify-content: space-around; font-weight: bold; font-size: 13px; } .grid { display: grid; grid-template-columns: 1.5fr 1.5fr; gap: 16px; flex-grow: 1; min-height: 0; } .panel { background: var(--card); border: 1px solid var(--border); padding: 16px; border-radius: 6px; overflow-y: auto; display: flex; flex-direction: column; } .panel-title { font-size: 12px; font-weight: 700; margin-bottom: 10px; border-bottom: 1px solid var(--border); padding-bottom: 4px; text-transform: uppercase; } input, button { padding: 8px; border: 1px solid var(--border); border-radius: 4px; font-size: 12px; margin-top: 4px; } button { background: var(--primary); color: white; font-weight: bold; cursor: pointer; width: 100%; } .chat-box { height: 120px; overflow-y: auto; border: 1px solid var(--border); padding: 8px; background: #f1f5f9; border-radius: 4px; margin-bottom: 6px; } table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 11px; } th, td { padding: 6px; text-align: left; border-bottom: 1px solid var(--border); } th { background: #f1f5f9; } .video-container { width: 100%; height: 180px; background: #000; border: 1px solid var(--border); border-radius: 4px; overflow: hidden; margin-top: 5px; }</style></head><body><header><span>DEUDA: 113.2%</span><span>PARO: 11.7%</span><span>IPC: 3.4%</span><span>RÉGIMEN: Democracia Parlamentaria en Obras</span></header><div class="grid"><div class="panel"><div class="panel-title">Mundo Real en Directo</div><div class="video-container"><iframe width="100%" height="100%" src="https://youtube.com" frameborder="0" allow="autoplay" allowfullscreen></iframe></div><div class="panel-title" style="margin-top:15px;">Gastos Fijos Obligatorios</div><table><thead><tr><th>Concepto Operativo</th><th>Coste Mensual</th><th>Estado Cobertura</th></tr></thead><tbody><tr><td>Alquiler Vivienda</td><td><b>360,00 €</b></td><td>Riesgo Neto / Ingreso 0</td></tr><tr><td>Alquiler Parking</td><td><b>60,00 €</b></td><td>Riesgo Neto / Ingreso 0</td></tr><tr style="background:#f8fafc; font-weight:700;"><td>Burn Rate</td><td style="color:var(--danger);">420,00 €</td><td>Requisito: RGC Catalunya</td></tr></tbody></table></div><div class="panel"><div class="panel-title">Acciones Coercitivas (Votos)</div><button id="btn_vote0">Ejecutar Modificación IVA al 25%</button><button id="btn_vote1" style="background:var(--danger); margin-top:4px;">Decretar Ajuste Lineal Sanidad</button><button id="btn_golpe" style="background:#0f172a; margin-top:4px;">FORZAR GOLPE DE ESTADO (RIESGO: 0.0%)</button><div class="panel-title" style="margin-top:15px;">Firma Digital del Operador</div><input type="password" id="token" placeholder="Clave criptográfica..."><button id="authBtn">Validar Credenciales</button></div><div class="panel" id="adminPanel" style="display:none;"><div class="panel-title" style="color:var(--danger);">Biotopo Privado & RTX 3060</div><p>SERPIENTE SEFA: <b>ALERTA</b> | Próxima comida: <b>2026-05-20</b></p><p style="margin-top:4px;">SUBVENCIÓN BOE: <b>Sin licitaciones hoy.</b></p><p style="margin-top:4px;">COBERTURA EXPEDIENTE: <b>Renda Garantitzada de Ciutadania</b></p><div style="display:flex; align-items:center; gap:15px; margin-top:10px;"><img src="https://qrserver.commonero:44AFFq5kSiGb...?tx_amount=0.04&color=0f172a" width="80" height="80" alt="XMR"><div style="font-size:10px; word-break:break-all;"><b>Wallet Monero:</b><br>44AFFq5kSiGb...<br><br><b>Precio Base:</b> 0.04 XMR</div></div><table><thead><tr><th>ID</th><th>Inmueble</th><th>Provincia</th><th>Viabilidad</th><th>Agua 500m</th></tr></thead><tbody></tbody></table></div><div class="panel"><div class="panel-title">Reloj del Enjambre Local</div><div class="chat-box" id="chatBox"></div></div></div><script>const ws = new WebSocket("ws://" + window.location.hostname + ":5005/api/v1/ws"); ws.onmessage = (e) => { try { const st = JSON.parse(e.data); if(st.simulation) { document.getElementById('chatBox').innerHTML = st.simulation.chat_log.map(m => "<p><b>["+m.sender+"]</b>: "+m.message+"</p>").join(""); } } catch(err) {} }; document.getElementById('authBtn').onclick = () => { if(document.getElementById('token').value === "cortex2026") { document.getElementById('adminPanel').style.display = "flex"; } }; async function vote(i) { await fetch("/api/v1/simulation/vote", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ vote_index: i }) }); } document.getElementById('btn_vote0').onclick = () => vote(0); document.getElementById('btn_vote1').onclick = () => vote(1); document.getElementById('btn_golpe').onclick = async () => { await fetch("/api/v1/simulation/vote", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ vote_index: 2 }) }); };</script></body></html>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>CORTEX OS v3.0 - Centro Nervioso</title>
+    <style>
+        body { font-family: monospace; background: #fafafa; color: #000; margin: 20px; font-size: 13px; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; }
+        .card { background: #fff; border: 2px solid #000; padding: 15px; box-shadow: 4px 4px 0px #000; }
+        .stats { font-size: 14px; font-weight: bold; background: #e2e2e2; padding: 10px; border: 2px solid #000; }
+        .btn { background: #000; color: #fff; border: none; padding: 10px; width: 100%; font-family: monospace; font-weight: bold; cursor: pointer; text-transform: uppercase; margin-bottom: 8px; }
+        .btn:hover { background: #333; }
+        .btn.danger { background: #ff4d4d; color: black; }
+        .btn.voice { background: #4da6ff; color: black; }
+        iframe { width: 100%; height: 240px; border: 2px solid #000; }
+        ul { list-style-type: none; padding: 0; max-height: 180px; overflow-y: auto; border: 1px solid #000; background: #fff; padding: 10px; }
+        li { border-bottom: 1px dashed #ccc; padding: 5px 0; }
+    </style>
+    <script>
+        async function enviarVoto(accion) {
+            await fetch('/api/v1/simulation/vote', {
+                method: 'POST',
+                headers: {Content-Type: application/json},
+                body: JSON.stringify({voto_index: accion})
+            });
+            setTimeout(() => location.reload(), 500);
+        }
+    </script>
+</head>
+<body>
+    <div class="card" style="margin-bottom:15px;">
+        <h2>PAÍS EN OBRAS · INTERFAZ OPERATIVA DE LA REALIDAD v3.0</h2>
+        <p>Operador: Anna Armengol | IP Local: 192.168.1.38 | Padrón Operativo: Ciutadilla (Tàrrega) | Tramitación Cobertura: PENDIENTE_ENTREGA</p>
+    </div>
+    <div class="stats">
+        RÉGIMEN ACTIVO: Democracia Parlamentaria en Obras | DEUDA PÚBLICA: 113.87% | RIESGO DE GOLPE: 0.0%
+    </div>
+    <div class="grid">
+        <div class="card">
+            <h3>REALITY SIMULATION & LIFE OS</h3>
+            <button class="btn voice">Voz Descentralizada Canal Activo</button>
+            <button class="btn" onclick="enviarVoto('subir_iva')">Subir IVA (+Corrupción, -Deuda)</button>
+            <button class="btn" onclick="enviarVoto('recortar_sanidad')">Recortar Sanidad (+Riesgo Golpe)</button>
+            <button class="btn danger" onclick="enviarVoto('ejecutar_golpe')">FORZAR ACCIÓN: EJECUTAR GOLPE DE ESTADO</button>
+            
+            <h4>WORLD FEED / LOG NARRATIVO</h4>
+            <ul><li><strong>[Sistema]</strong> Reality OS Core v3.0 arriba.</li></ul>
+        </div>
+        <div class="card">
+            <h3>WORLD FEED & NOTICIAS SINTÉTICAS</h3>
+            <iframe src="https://youtube.com" allowfullscreen></iframe>
+            <p style="margin-top:10px; font-size:11px; word-break:break-all;">
+                <strong>XMR (Bóveda):</strong> 4FDD206CB403CA076447E0AC2E73DB53C1DA4D973534DEBF2A687B94EF7C24B504BA4ACB07BEEF3E0CE10D2F8A0CCCA<br>
+                <strong>BTC (Bóveda):</strong> bc1qeeaf1b3cc0826d05dc9250db65d25f0ad49f25f0ad4<br>
+                <strong>Marketplace Tattoos:</strong> 14 ítems | <strong>Precio Base:</strong> 0.04 XMR
+            </p>
+        </div>
+    </div>
+</body>
+</html>
