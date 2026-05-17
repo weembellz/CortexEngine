@@ -1,80 +1,33 @@
 {
   "simulation": {
-    "deuda_publica_pct": 121.29,
+    "deuda_publica_pct": 119.9,
     "unemployment_rate_pct": 11.7,
     "approval_rating_pct": 42.0,
     "ipc_interanual_pct": 3.4,
     "corruption_index_pct": 75.0,
     "riesgo_golpe_estado_pct": 0.0,
     "regimen_actual": "Democracia Parlamentaria en Obras",
-    "chat_log": [
-      {
-        "sender": "Sistema",
-        "message": "Reality OS Core v3.0 arriba."
-      },
-      {
-        "sender": "Cortex-News",
-        "message": "ALERTA SINT\u00c9TICA: Variaci\u00f3n param\u00e9trica detectada en el algoritmo nacional."
-      }
-    ]
+    "chat_log": [{"sender": "Sistema", "message": "Matriz unificada y purgada. Reality OS v3.0 listo."}]
   },
   "infrastructure": {
-    "node_muscle_status": "OFFLINE",
-    "gpu_load_pct": 0.0,
-    "ue_fps": 0.0,
+    "node_muscle_status": "ONLINE",
     "terrarium_temperature_celsius": 28.5,
-    "terrarium_humidity_percentage": 52.0,
-    "terrarium_serpiente": {
-      "nombre": "Sefa",
-      "estado": "ALERTA",
-      "proxima_comida": "2026-05-20"
-    }
+    "terrarium_serpiente": { "nombre": "Sefa", "estado": "ALERTA" }
   },
   "bienes_raices": {
     "operador_local": {
       "identidad": "Anna Armengol Hallado",
-      "municipio": "T\u00e0rrega",
+      "municipio": "Tàrrega",
       "empadronamiento": "Ciutadilla",
-      "provincia": "Lleida",
-      "cobertura_solicitada": "Renda Garantitzada de Ciutadania (801.85 EUR)",
-      "wallet_xmr": "44AFFq5kSiGb..."
+      "cobertura_solicitada": "RGC (801.85 EUR)"
     },
     "objetivos": [
-      {
-        "id": "OBJ-001",
-        "tipo": "Iglesia abandonada",
-        "provincia": "Zaragoza",
-        "coords": [
-          41.656,
-          -0.877
-        ],
-        "viabilidad_pct": 68.5,
-        "agua_500m": false
-      },
-      {
-        "id": "OBJ-002",
-        "tipo": "Fabrica industrial",
-        "provincia": "Asturias",
-        "coords": [
-          43.361,
-          -5.849
-        ],
-        "viabilidad_pct": 74.2,
-        "agua_500m": true
-      }
+      {"id": "OBJ-001", "tipo": "Iglesia abandonada", "provincia": "Zaragoza", "viabilidad_pct": 68.5},
+      {"id": "OBJ-002", "tipo": "Fabrica industrial", "provincia": "Asturias", "viabilidad_pct": 74.2}
     ]
   },
   "yield": {
-    "marketplace_tattoos": {
-      "assets_count": 14,
-      "precio_base_xmr": 0.04
-    },
-    "subvenciones": {
-      "ultima_licitacion": "Sin subvenciones criticas detectadas hoy."
-    }
-  },
-  "system": {
-    "token_admin": "cortex2026",
-    "game_version": "3.0"
+    "marketplace_tattoos": { "assets_count": 14, "precio_base_xmr": 0.04 },
+    "subvenciones": { "ultima_licitacion": "Sin alertas recientes del BOE", "estado": "IDLE" }
   }
 }
