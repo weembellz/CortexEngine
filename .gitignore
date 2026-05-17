@@ -1,6 +1,8 @@
-venv/
-env/
-.pycache/
-*/__pycache__/
-*.log
+.wrangler/
+cache/
+logs/
+vault/
 *.tmp
+*.log
+venv/
+__pycache__/
