@@ -1,8 +1,8 @@
-.wrangler/
-cache/
 logs/
 vault/
-*.tmp
-*.log
 venv/
 __pycache__/
+*.tmp
+*.log
+.wrangler/
+cache/
