@@ -1,7 +1,0 @@
-{
-  "competencias_clave": {
-    "gestion_proyectos": ["gestion", "proyectos", "scrum"],
-    "desarrollo_software": ["python", "fastapi", "linux"],
-    "diseno_grafico": ["tatuaje", "ink", "vectorial", "animacion"]
-  }
-}
