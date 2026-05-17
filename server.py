@@ -1,4 +1,4 @@
-import json, subprocess, asyncio
+import json, subprocess, asyncio, uvicorn
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
@@ -33,3 +33,6 @@ async def websocket_voice_endpoint(websocket: WebSocket):
             await asyncio.sleep(0.01)
     except WebSocketDisconnect:
         pass
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=5005)
