@@ -9,7 +9,7 @@ def obtener_ip():
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         s.connect(("8.8.8.8", 80))
-        ip = s.getsockname()
+        ip = s.getsockname()[0]
         s.close()
         return ip
     except Exception:
@@ -39,7 +39,6 @@ while True:
             chat_log = st["simulation"].get("chat_log", [])
             ip_local = obtener_ip()
 
-            # Construir bloque de noticias dinámicas
             feed_html = "".join([f"<li><strong>[{n.get('sender')}]</strong> {n.get('message')}</li>" for n in chat_log[::-1]])
 
             html_content = f"""<!DOCTYPE html>
