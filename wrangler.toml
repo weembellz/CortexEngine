@@ -1,0 +1,7 @@
+name = "svrn-core-backend"
+main = "worker.js"
+compatibility_date = "2026-05-15"
+
+[[kv_namespaces]]
+binding = "STATE_KV"
+id = "00b922a3805144ae849e98911c1b710d"

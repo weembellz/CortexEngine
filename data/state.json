@@ -1,11 +1,81 @@
 {
-  "timestamp": "2026-05-11T21:30:09.598818",
-  "world": {
-    "h_index": 3.55,
-    "crisis_level": 87
+  "simulation": {
+    "debt_to_gdp_ratio": 113.2,
+    "unemployment_rate": 11.7,
+    "approval_rating": 42,
+    "ipc": 3.4,
+    "h_index": 1.25,
+    "corruption_index": 75,
+    "defcon_level": 5,
+    "meteorological_alerts": [],
+    "active_proposals": [
+      "Subir IVA al 25% (deuda -10%)",
+      "Recortar sanidad (deuda -8%)"
+    ],
+    "chat_log": [
+      {
+        "sender": "Sistema",
+        "message": "Cortex OS en linea. Token: cortex2026"
+      }
+    ]
   },
-  "economy": {
-    "gold": 2355.4,
-    "btc": 64100.0
+  "infrastructure": {
+    "node_muscle_status": "OFFLINE",
+    "gpu_load": 0,
+    "ue_fps": 0,
+    "terrarium_temperature_celsius": 28.5,
+    "terrarium_humidity_percentage": 52,
+    "terrarium_serpiente": {
+      "nombre": "Sefa",
+      "estado": "ALERTA",
+      "ultima_comida": "2026-05-10T20:00:00",
+      "proxima_comida": "2026-05-20T20:00:00",
+      "dias_restantes": 3,
+      "tipo_presa": "Roedor descongelado 45g",
+      "historial": [
+        {
+          "fecha": "2026-05-10T20:00:00",
+          "resultado": "EXITOSA"
+        }
+      ]
+    }
+  },
+  "bienes_raices": {
+    "objetivos": [
+      {
+        "id": "OBJ-001",
+        "tipo": "Iglesia abandonada",
+        "provincia": "Zaragoza",
+        "coords": "41.656,-0.877",
+        "viabilidad": 68.5,
+        "recurso_hidrico_detectado": false
+      },
+      {
+        "id": "OBJ-002",
+        "tipo": "Fabrica industrial",
+        "provincia": "Asturias",
+        "coords": "43.361,-5.849",
+        "viabilidad": 74.2,
+        "recurso_hidrico_detectado": false
+      }
+    ]
+  },
+  "yield": {
+    "marketplace_tattoos": {
+      "assets": 14,
+      "wallet_xmr": "44AFFq5kSiGb...",
+      "precio_base_xmr": 0.04,
+      "ventas_totales_xmr": 0.48
+    },
+    "subvenciones": {
+      "activo": true,
+      "ultima_licitacion": "Sin licitaciones de riesgo detectadas hoy.",
+      "partida_euros": 12500,
+      "estado": "APLICABLE"
+    }
+  },
+  "system": {
+    "timestamp": "",
+    "game_version": "2.0"
   }
 }
