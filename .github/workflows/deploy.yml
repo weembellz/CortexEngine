@@ -1,0 +1,56 @@
+name: Deploy Cloudflare Stack & Sync D1
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Dependencies
+        run: |
+          npm install wrangler --save-dev
+          sudo apt-get install -y jq curl
+
+      - name: Deploy Workers & Pages (Full Stack)
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: "81efa4f203d49451c28d1f99c10efa03"
+        run: |
+          echo "Desplegando Worker principal (pais-en-obras)..."
+          npx wrangler deploy --name pais-en-obras
+          
+          if [ -f wrangler.proxy.toml ]; then
+            echo "Desplegando proxy (paisenobras-proxy)..."
+            npx wrangler deploy --config wrangler.proxy.toml
+          fi
+
+      - name: Sync Local State to Cloudflare D1
+        env:
+          WORKER_HOST: "pais-en-obras.weembellz.workers.dev"
+        run: |
+          if [ -f core/world_state.json ]; then
+            echo "Iniciando sincronización automatizada a D1..."
+            for key in $(jq -r 'keys[]' core/world_state.json); do
+              value=$(jq -c ".\"$key\"" core/world_state.json)
+              
+              curl -s -X POST "https://$WORKER_HOST/api/update-state" \
+                -H "Content-Type: application/json" \
+                -d "{\"type\":\"world_state\",\"key\":\"$key\",\"value\":$value}"
+                
+              echo "   -> [✓] Sincronizado: $key"
+            done
+          else
+            echo "Aviso: No se encontró core/world_state.json en este commit."
+          fi
