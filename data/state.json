@@ -1,81 +1,76 @@
 {
   "simulation": {
-    "debt_to_gdp_ratio": 113.2,
-    "unemployment_rate": 11.7,
-    "approval_rating": 42,
-    "ipc": 3.4,
+    "deuda_publica_pct": 113.2,
+    "unemployment_rate_pct": 11.7,
+    "approval_rating_pct": 42.0,
+    "ipc_interanual_pct": 3.4,
     "h_index": 1.25,
-    "corruption_index": 75,
+    "corruption_index_pct": 75.0,
     "defcon_level": 5,
-    "meteorological_alerts": [],
-    "active_proposals": [
-      "Subir IVA al 25% (deuda -10%)",
-      "Recortar sanidad (deuda -8%)"
-    ],
+    "riesgo_golpe_estado_pct": 0.0,
+    "regimen_actual": "Democracia Parlamentaria en Obras",
     "chat_log": [
-      {
-        "sender": "Sistema",
-        "message": "Cortex OS en linea. Token: cortex2026"
-      }
+      {"sender": "Sistema", "message": "Sistema reiniciado correctamente"}
     ]
   },
   "infrastructure": {
     "node_muscle_status": "OFFLINE",
-    "gpu_load": 0,
-    "ue_fps": 0,
+    "gpu_load_pct": 0.0,
+    "ue_fps": 0.0,
     "terrarium_temperature_celsius": 28.5,
-    "terrarium_humidity_percentage": 52,
+    "terrarium_humidity_percentage": 52.0,
     "terrarium_serpiente": {
       "nombre": "Sefa",
       "estado": "ALERTA",
       "ultima_comida": "2026-05-10T20:00:00",
       "proxima_comida": "2026-05-20T20:00:00",
       "dias_restantes": 3,
-      "tipo_presa": "Roedor descongelado 45g",
-      "historial": [
-        {
-          "fecha": "2026-05-10T20:00:00",
-          "resultado": "EXITOSA"
-        }
-      ]
+      "tipo_presa": "Roedor descongelado 45g"
     }
   },
   "bienes_raices": {
+    "operador_local": {
+      "municipio": "Tàrrega",
+      "empadronamiento": "Ciutadilla",
+      "provincia": "Lleida",
+      "cobertura_solicitada": "Renda Garantitzada de Ciutadania (810.83 EUR)"
+    },
     "objetivos": [
       {
         "id": "OBJ-001",
         "tipo": "Iglesia abandonada",
         "provincia": "Zaragoza",
-        "coords": "41.656,-0.877",
-        "viabilidad": 68.5,
-        "recurso_hidrico_detectado": false
+        "coords": [41.656, -0.877],
+        "viabilidad_pct": 68.5,
+        "agua_500m": false
       },
       {
         "id": "OBJ-002",
         "tipo": "Fabrica industrial",
         "provincia": "Asturias",
-        "coords": "43.361,-5.849",
-        "viabilidad": 74.2,
-        "recurso_hidrico_detectado": false
+        "coords": [43.361, -5.849],
+        "viabilidad_pct": 74.2,
+        "agua_500m": true
       }
     ]
   },
   "yield": {
     "marketplace_tattoos": {
-      "assets": 14,
+      "assets_count": 14,
       "wallet_xmr": "44AFFq5kSiGb...",
       "precio_base_xmr": 0.04,
       "ventas_totales_xmr": 0.48
     },
     "subvenciones": {
       "activo": true,
-      "ultima_licitacion": "Sin licitaciones de riesgo detectadas hoy.",
-      "partida_euros": 12500,
+      "ultima_licitacion": "Ayudas digitalizacion infraestructuras - 12.500 EUR",
+      "partida_euros": 12500.0,
       "estado": "APLICABLE"
     }
   },
   "system": {
+    "token_admin": "cortex2026",
     "timestamp": "",
-    "game_version": "2.0"
+    "game_version": "3.0"
   }
 }
