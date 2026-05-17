@@ -1,6 +1,6 @@
 {
   "simulation": {
-    "deuda_publica_pct": 113.88,
+    "deuda_publica_pct": 116.29,
     "unemployment_rate_pct": 11.7,
     "approval_rating_pct": 42.0,
     "ipc_interanual_pct": 3.4,
@@ -11,6 +11,10 @@
       {
         "sender": "Sistema",
         "message": "Reality OS Core v3.0 arriba."
+      },
+      {
+        "sender": "Cortex-News",
+        "message": "ALERTA SINT\u00c9TICA: Variaci\u00f3n param\u00e9trica detectada en el algoritmo nacional."
       }
     ]
   },
