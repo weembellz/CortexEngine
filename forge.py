@@ -3,6 +3,7 @@ import json, time, os, socket
 from pathlib import Path
 
 STATE_JSON = Path("/home/weemb/cortex/world_state.json")
+VAULT_JSON = Path("/home/weemb/cortex/vault/secrets.json")
 OUTPUT_FILE = Path("/home/weemb/cortex/web/index.html")
 
 def obtener_ip():
@@ -16,12 +17,25 @@ def obtener_ip():
         return "127.0.0.1"
 
 OUTPUT_FILE.parent.mkdir(parents=True, exist_ok=True)
-print("[FORGE] Motor de renderizado de la interfaz operativa iniciado.")
+print("[FORGE] Motor de renderizado conectado al Vault Privado.")
 
 while True:
     if Path("/home/weemb/cortex/event_engine.py").exists():
         os.system("python3 /home/weemb/cortex/event_engine.py")
     
+    # Leer variables reales del Vault Privado Blindado
+    xmr_w, btc_w, padron, rgc_status = "N/A", "N/A", "N/A", "N/A"
+    if VAULT_JSON.exists():
+        try:
+            with open(VAULT_JSON, "r", encoding="utf-8") as vf:
+                v_data = json.load(vf)
+            xmr_w = v_data["wallets"]["xmr_main"]
+            btc_w = v_data["wallets"]["btc_cold"]
+            padron = v_data["life_os_metadata"]["padron_activa"] if "padron_activa" in v_data["life_os_metadata"] else v_data["life_os_metadata"].get("padron_activo", "N/A")
+            rgc_status = v_data["life_os_metadata"]["estado_solicitud_rgc"]
+        except Exception:
+            pass
+
     if STATE_JSON.exists():
         try:
             with open(STATE_JSON, "r", encoding="utf-8") as f: 
@@ -31,10 +45,8 @@ while True:
             regimen = st["simulation"]["regimen_actual"]
             golpe = st["simulation"]["riesgo_golpe_estado_pct"]
             op_mun = st["bienes_raices"]["operador_local"]["municipio"]
-            op_emp = st["bienes_raices"]["operador_local"]["empadronamiento"]
             op_cob = st["bienes_raices"]["operador_local"]["cobertura_solicitada"]
             assets = st["yield"]["marketplace_tattoos"]["assets_count"]
-            xmr_w = st["yield"]["marketplace_tattoos"]["wallet_xmr"]
             xmr_p = st["yield"]["marketplace_tattoos"]["precio_base_xmr"]
             chat_log = st["simulation"].get("chat_log", [])
             ip_local = obtener_ip()
@@ -73,7 +85,7 @@ while True:
 <body>
     <div class="card" style="margin-bottom:15px;">
         <h2>PAÍS EN OBRAS · INTERFAZ OPERATIVA DE LA REALIDAD v3.0</h2>
-        <p>Operador: Anna Armengol | IP: {ip_local} | Padrón: {op_emp} ({op_mun}) | Solicitud: {op_cob}</p>
+        <p>Operador: Anna Armengol | IP Local: {ip_local} | Padrón Operativo: {padron} ({op_mun}) | Tramitación Cobertura: {rgc_status}</p>
     </div>
     <div class="stats">
         RÉGIMEN ACTIVO: {regimen} | DEUDA PÚBLICA: {deuda}% | RIESGO DE GOLPE: {golpe}%
@@ -92,7 +104,11 @@ while True:
         <div class="card">
             <h3>WORLD FEED & NOTICIAS SINTÉTICAS</h3>
             <iframe src="https://youtube.com" allowfullscreen></iframe>
-            <p style="margin-top:10px; font-size:11px; word-break:break-all;"><strong>XMR:</strong> {xmr_w} | <strong>Base:</strong> {xmr_p} XMR | <strong>Tattoos IA:</strong> {assets}</p>
+            <p style="margin-top:10px; font-size:11px; word-break:break-all;">
+                <strong>XMR (Bóveda):</strong> {xmr_w}<br>
+                <strong>BTC (Bóveda):</strong> {btc_w}<br>
+                <strong>Marketplace Tattoos:</strong> {assets} ítems | <strong>Precio Base:</strong> {xmr_p} XMR
+            </p>
         </div>
     </div>
 </body>
