@@ -9,7 +9,7 @@ def obtener_ip():
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         s.connect(("8.8.8.8", 80))
-        ip = s.getsockname()[0]
+        ip = s.getsockname()
         s.close()
         return ip
     except Exception:
@@ -36,7 +36,11 @@ while True:
             assets = st["yield"]["marketplace_tattoos"]["assets_count"]
             xmr_w = st["yield"]["marketplace_tattoos"]["wallet_xmr"]
             xmr_p = st["yield"]["marketplace_tattoos"]["precio_base_xmr"]
+            chat_log = st["simulation"].get("chat_log", [])
             ip_local = obtener_ip()
+
+            # Construir bloque de noticias dinámicas
+            feed_html = "".join([f"<li><strong>[{n.get('sender')}]</strong> {n.get('message')}</li>" for n in chat_log[::-1]])
 
             html_content = f"""<!DOCTYPE html>
 <html lang="es">
@@ -53,6 +57,8 @@ while True:
         .btn.danger {{ background: #ff4d4d; color: black; }}
         .btn.voice {{ background: #4da6ff; color: black; }}
         iframe {{ width: 100%; height: 240px; border: 2px solid #000; }}
+        ul {{ list-style-type: none; padding: 0; max-height: 180px; overflow-y: auto; border: 1px solid #000; background: #fff; padding: 10px; }}
+        li {{ border-bottom: 1px dashed #ccc; padding: 5px 0; }}
     </style>
     <script>
         async function enviarVoto(accion) {{
@@ -80,6 +86,9 @@ while True:
             <button class="btn" onclick="enviarVoto('subir_iva')">Subir IVA (+Corrupción, -Deuda)</button>
             <button class="btn" onclick="enviarVoto('recortar_sanidad')">Recortar Sanidad (+Riesgo Golpe)</button>
             <button class="btn danger" onclick="enviarVoto('ejecutar_golpe')">FORZAR ACCIÓN: EJECUTAR GOLPE DE ESTADO</button>
+            
+            <h4>WORLD FEED / LOG NARRATIVO</h4>
+            <ul>{feed_html}</ul>
         </div>
         <div class="card">
             <h3>WORLD FEED & NOTICIAS SINTÉTICAS</h3>
