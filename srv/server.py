@@ -1,44 +1,76 @@
-import json, subprocess, asyncio
-from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+#!/usr/bin/env python3
+import asyncio, json, os, sys, subprocess
+from datetime import datetime
+from pathlib import Path
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect, BackgroundTasks
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
 
-app = FastAPI()
-STATE_FILE = "/home/weemb/cortex/core/world_state.json"
-HTML_FILE = "/home/weemb/cortex/web/index.html"
+BASE = Path("/home/weemb/cortex")
+sys.path.append(str(BASE))
+from core.chat_ollama import OllamaClient
 
-class VoteRequest(BaseModel):
-    voto_index: str
+STATE_PATH = BASE / "core/world_state.json"
+INDEX_PATH = BASE / "web/index.html"
+GEN_PATH = BASE / "bin/generator_asset_forge.py"
 
-@app.get("/")
-def read_index():
-    return FileResponse(HTML_FILE)
+app = FastAPI(title="CORTEX VOICE MASTER ENGINE")
+app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
 
-@app.get("/api/v1/state")
-def get_state():
-    with open(STATE_FILE, "r", encoding="utf-8") as f:
-        return json.load(f)
+class VotePayload(BaseModel): vote_index: int
+class ChatPayload(BaseModel): text: str
 
-@app.post("/api/v1/simulation/vote")
-def post_vote(req: VoteRequest):
-    subprocess.run(["python3", "/home/weemb/cortex/core/engine.py", req.voto_index], check=True)
-    return {"status": "success", "action_processed": req.voto_index}
+def load_state():
+    with open(STATE_PATH, "r", encoding="utf-8") as f: return json.load(f)
+def save_state(s):
+    with open(STATE_PATH, "w", encoding="utf-8") as f: json.dump(s, f, indent=2)
+def run_generator():
+    if GEN_PATH.exists(): subprocess.run(["python3", str(GEN_PATH)], capture_output=True)
 
-@app.websocket("/ws/v1/voice")
-async def websocket_voice_endpoint(websocket: WebSocket):
-    await websocket.accept()
-    print("[VOICE] Canal de voz Cortex conectado.")
+clients = []
+
+@app.websocket("/api/v1/ws")
+async def ws_endpoint(ws: WebSocket):
+    await ws.accept(); clients.append(ws)
     try:
         while True:
-            # Recibir chunks de Opus/WebM en ráfagas de 100ms
-            audio_chunk = await websocket.receive_bytes()
-            
-            # PIPELINE DE TRABAJO REAL FUTURO:
-            # 1. texto = whisper_stt(audio_chunk)
-            # 2. respuesta_texto = llm_query(texto, STATE_FILE)
-            # 3. audio_out = piper_tts(respuesta_texto)
-            # await websocket.send_bytes(audio_out)
-            
-            await asyncio.sleep(0.01)
-    except WebSocketDisconnect:
-        print("[VOICE] Canal de voz Cortex desconectado.")
+            msg = await ws.receive_text(); data = json.loads(msg)
+            if data.get("type") == "voice_transcription":
+                s = load_state(); client = OllamaClient(); reply = client.get_directive(data["text"], s)
+                s.setdefault("simulation", {}).setdefault("chat_log", []).append({"sender": "Operador_Voz", "message": data["text"]})
+                s["simulation"]["chat_log"].append({"sender": "Cortex_OS", "message": reply}); save_state(s)
+                await ws.send_json({"type": "voice_reply", "text": reply})
+    except WebSocketDisconnect: clients.remove(ws)
+
+async def broadcaster():
+    while True:
+        await asyncio.sleep(2)
+        try:
+            s = load_state()
+            if "system" not in s: s["system"] = {}
+            s["system"]["timestamp"] = datetime.now().isoformat()
+            for c in clients[:]:
+                try: await c.send_json({"type": "state_update", "data": s})
+                except: pass
+        except: pass
+
+@app.on_event("startup")
+async def startup(): asyncio.create_task(broadcaster())
+
+@app.get("/")
+async def root(): return FileResponse(INDEX_PATH)
+
+@app.get("/api/v1/state")
+async def get_state(): return load_state()
+
+@app.post("/api/v1/simulation/vote")
+async def vote(v: VotePayload, bg: BackgroundTasks):
+    s = load_state(); debt = s["simulation"].get("deuda_publica_pct", 113.2)
+    if v.vote_index == 0: s["simulation"]["deuda_publica_pct"] = max(0.0, debt - 10.0)
+    elif v.vote_index == 1: s["simulation"]["deuda_publica_pct"] = max(0.0, debt - 8.5)
+    save_state(s); bg.add_task(run_generator); return {"success": True}
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run("srv.server:app", host="0.0.0.0", port=5005, reload=False)
