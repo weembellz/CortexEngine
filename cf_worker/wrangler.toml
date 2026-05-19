@@ -1,6 +1,6 @@
 name = "pais-en-obras"
-main = "worker.js"
-compatibility_date = "2024-12-18"
+main = "src/worker.js"
+compatibility_date = "2024-04-01"
 
 [[d1_databases]]
 binding = "paisenobras_db"

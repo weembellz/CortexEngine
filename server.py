@@ -8,7 +8,7 @@ from pydantic import BaseModel
 
 BASE = "/home/weemb/cortex"
 BRIDGE = f"{BASE}/var/world/params.json"
-INDEX  = f"{BASE}/web/index.html"
+INDEX = f"{BASE}/web/index.html"
 
 app = FastAPI(title="Cortex Core", version="1.0.0")
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
@@ -16,7 +16,7 @@ app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], all
 class VoteReq(BaseModel):
     voto_index: str
 
-def read_bridge() -> dict:
+def read_bridge():
     if not os.path.exists(BRIDGE):
         raise HTTPException(status_code=503, detail="Bridge no disponible")
     with open(BRIDGE, "r") as f:
@@ -39,11 +39,7 @@ def vote(req: VoteReq):
     engine = f"{BASE}/core/event_engine.py"
     if not os.path.exists(engine):
         raise HTTPException(status_code=503, detail="Motor no disponible")
-    subprocess.Popen(
-        ["python3", engine, req.voto_index],
-        stdout=subprocess.DEVNULL,
-        stderr=subprocess.DEVNULL,
-    )
+    subprocess.Popen(["python3", engine, req.voto_index], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     return {"status": "queued", "action": req.voto_index}
 
 @app.websocket("/ws/v1/voice")

@@ -1,22 +1,22 @@
 {
-  "timestamp": "2026-05-17T22:00:00Z",
+  "timestamp": "2026-05-18T21:58:18.673496+00:00",
   "world": {
-    "h_index": 7.42,
-    "chaos": 0.55,
+    "h_index": 7.62,
+    "chaos": 1.0,
     "gravity": 9.81,
     "fog_density": 0.45
   },
   "economy": {
     "capital_eur": 0,
     "active_crises": 1,
-    "deuda_publica_pct": 113.2,
+    "deuda_publica_pct": 111.7,
     "unemployment_rate_pct": 11.7,
     "corruption_index_pct": 75.0,
-    "regimen_actual": "DEMOCRACIA_DEBIL"
+    "regimen_actual": "COLAPSO_SISTEMICO"
   },
   "life_os": {
     "operador_local": {
-      "municipio": "Tàrrega",
+      "municipio": "Tarrega",
       "empadronamiento": "Pendiente Presencial",
       "cobertura_solicitada": "RGC+IMV+Ayuda Alquiler"
     },
@@ -24,8 +24,10 @@
       "alquiler_total_real": 368.45
     },
     "terrario_sefa": {
-      "status": "Monitoreando",
-      "especie": "Lampropeltis californiae"
+      "status": "ACTIVO",
+      "especie": "Lampropeltis californiae",
+      "temperatura_sonda_c": 25.0,
+      "humedad_sonda_pct": 56.0
     },
     "yield_tattoos": {
       "assets_count": 48,
@@ -33,7 +35,7 @@
     }
   },
   "news_feed": {
-    "titular": "ARQUITECTURA CANÓNICA SELLADA",
-    "impacto": "Fuente de verdad unificada en var/world/params.json"
+    "titular": "GOLPE DE ESTADO",
+    "impacto": "Sistema en colapso"
   }
 }

@@ -2,260 +2,624 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>PAÍS EN OBRAS // CENTRO NERVIOSO v5.0</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MÁQUINA DE GUERRA FINANCIERA · CORE v7.2</title>
     <style>
-        body { background-color: #000000; color: #FFFFFF; font-family: 'JetBrains Mono', monospace; text-transform: uppercase; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            border-radius: 0px !important;
+        }
+        body {
+            background-color: #000000;
+            color: #FFFFFF;
+            font-family: 'JetBrains Mono', 'SF Mono', ui-monospace, monospace;
+            font-size: 11px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            padding: 12px;
+        }
+        /* rejilla militar sutil */
+        .military-grid {
+            background-size: 20px 20px;
+            background-image: linear-gradient(to right, rgba(212,175,55,0.015) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(212,175,55,0.015) 1px, transparent 1px);
+        }
         .text-gold { color: #D4AF37; }
         .border-gold { border-color: #D4AF37; }
-        .panel-military { border: 1px solid #222222; background-color: #050505; }
-        ::-webkit-scrollbar { display: none; }
-        canvas { display: block; width: 100%; height: auto; background: #000; border: 1px solid #222; }
+        .bg-gold { background-color: #D4AF37; }
+        .border-dim { border-color: #1e1e1e; }
+        .text-dim { color: #444444; }
+        .bg-critical { background-color: #DC2626; }
+        .border-critical { border-color: #DC2626; }
+        /* paneles */
+        .panel {
+            border: 1px solid #222222;
+            background-color: #000000;
+            padding: 12px;
+        }
+        .panel-header {
+            border-bottom: 1px solid #222222;
+            padding-bottom: 8px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+        button, .btn {
+            background: #111111;
+            border: 1px solid #333333;
+            color: #D4AF37;
+            font-family: monospace;
+            font-size: 9px;
+            font-weight: bold;
+            text-transform: uppercase;
+            padding: 8px 12px;
+            cursor: pointer;
+            transition: all 0.05s linear;
+        }
+        button:hover, .btn:hover {
+            background: #D4AF37;
+            color: #000000;
+            border-color: #D4AF37;
+        }
+        button:active, .btn:active {
+            transform: translateY(1px);
+        }
+        input, textarea {
+            background: #000000;
+            border: 1px solid #333333;
+            color: #D4AF37;
+            font-family: monospace;
+            font-size: 9px;
+            padding: 6px 8px;
+            outline: none;
+        }
+        input:focus, textarea:focus {
+            border-color: #D4AF37;
+        }
+        ::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #000000;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #222222;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #D4AF37;
+        }
+        canvas {
+            display: block;
+            width: 100%;
+            height: auto;
+            background: #000000;
+            border: 1px solid #222222;
+        }
+        .grid-4cols {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+        .grid-3cols {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+        .flex-between {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .log-area {
+            background: #050505;
+            border: 1px solid #1a1a1a;
+            padding: 8px;
+            height: 110px;
+            overflow-y: auto;
+            font-size: 9px;
+            font-family: monospace;
+            color: #888888;
+        }
+        .blink {
+            animation: blink 1s step-end infinite;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        hr {
+            border-color: #222222;
+            margin: 8px 0;
+        }
     </style>
 </head>
-<body class="min-h-screen p-6 flex flex-col justify-between tracking-wider text-xs">
+<body class="military-grid" style="max-width: 1600px; margin: 0 auto;">
 
     <!-- CABECERA -->
-    <header class="w-full flex justify-between items-baseline border-b border-[#222] pb-4 mb-6">
+    <div class="flex-between" style="border-bottom: 1px solid #222; padding-bottom: 10px; margin-bottom: 12px;">
         <div>
-            <h1 class="text-sm font-black text-white tracking-widest text-gold">PAÍS EN OBRAS // CORE_v5.0</h1>
-            <p class="text-[9px] text-gray-500">UNIX PHILOSOPHY · SINGLE SOURCE OF TRUTH</p>
+            <span class="text-gold" style="font-weight: bold;">MÁQUINA DE GUERRA FINANCIERA // CORE_v7.2</span>
+            <div style="font-size: 9px; color: #666;">TÀRREGA SÍNCRO · RSA-4096 · UPLINK ACTIVO</div>
         </div>
-        <div class="text-right text-[10px] text-gray-500">
-            NODO: TÀRREGA (CAT) · <span id="clock" class="text-white">--:--:--</span>
+        <div style="text-align: right; font-size: 10px;">
+            <div>COORDS: <span class="text-gold">41.648°N, 1.141°E</span></div>
+            <div>SYS_TIME: <span id="clock" class="text-gold">--:--:--</span></div>
         </div>
-    </header>
+    </div>
 
-    <!-- CUADRÍCULA PRINCIPAL 3 COLUMNAS -->
-    <main class="grid grid-cols-1 lg:grid-cols-3 gap-6 flex-grow mb-6">
-
-        <!-- COLUMNA 1: REALITY FEED (NOTICIAS) -->
-        <div class="panel-military p-4">
-            <div class="border-b border-[#222] pb-2 mb-4 text-gold font-bold">01 // REALITY ENGINE</div>
-            <div id="feed-box" class="text-white whitespace-pre-wrap text-[11px] leading-relaxed">
-                [SISTEMA EN REPOSO ESTÁTICO]
+    <!-- CUADRÍCULA PRINCIPAL 4 COLUMNAS -->
+    <div class="grid-4cols" style="margin-bottom: 12px;">
+        <!-- COL 1: NODO RAÍZ + LIFE OS -->
+        <div class="panel">
+            <div class="panel-header">
+                <span class="text-gold font-weight-bold">[01_NODO_RAÍZ]</span>
+                <span style="font-size: 8px; border:1px solid #fff; padding:0 4px;">AUTH_CRÍTICA</span>
             </div>
-            <div class="mt-4 pt-3 border-t border-[#222]">
-                <div class="grid grid-cols-2 gap-2 text-[10px]">
-                    <div><span class="text-gray-500">DEUDA</span><br><span id="deuda-val" class="text-gold font-bold">0%</span></div>
-                    <div><span class="text-gray-500">DESEMPLEO</span><br><span id="desempleo-val" class="text-gold font-bold">0%</span></div>
-                    <div><span class="text-gray-500">APROBACIÓN</span><br><span id="aprobacion-val" class="text-gold font-bold">0%</span></div>
-                    <div><span class="text-gray-500">CORRUPCIÓN</span><br><span id="corrupcion-val" class="text-gold font-bold">0%</span></div>
+            <div style="margin-bottom: 12px;">
+                <div style="font-size: 9px; color:#666; margin-bottom: 4px;">ENTER PRIVATE KEY:</div>
+                <input type="password" id="private-key" placeholder="••••••••" style="width:100%;" onkeyup="checkAuth()">
+                <div id="auth-status" style="font-size: 8px; color:#666; margin-top: 4px;">Esperando firma...</div>
+            </div>
+            <div style="margin-bottom: 12px;">
+                <div class="text-gold" style="font-size: 9px; margin-bottom: 6px;">LIFE_OS (OPERADOR)</div>
+                <div style="background:#050505; border:1px solid #1a1a1a; padding: 8px;">
+                    <div class="flex-between"><span style="color:#666;">Renta Alquiler:</span><span id="life-rent" class="text-gold">368.45€</span></div>
+                    <div class="flex-between"><span style="color:#666;">Empadronamiento:</span><span id="life-padron" style="color:#DC2626;">PENDIENTE</span></div>
+                    <div class="flex-between"><span style="color:#666;">Terrario Sefa:</span><span id="life-sefa" class="text-gold">MONITOREANDO</span></div>
+                    <div class="flex-between"><span style="color:#666;">Monero Base:</span><span id="life-xmr" class="text-gold">0.150 XMR</span></div>
+                    <div class="flex-between"><span style="color:#666;">Capital extraído:</span><span id="capital-val" class="text-gold">0.00€</span></div>
                 </div>
             </div>
-        </div>
-
-        <!-- COLUMNA 2: SISMÓGRAFO + ACCIONES -->
-        <div class="panel-military p-4 flex flex-col justify-between">
             <div>
-                <div class="border-b border-[#222] pb-2 mb-4 flex justify-between items-center">
-                    <span class="text-gold font-bold">02 // CHAOS PLOTTER</span>
-                    <span id="regimen-badge" class="text-[9px] bg-black text-gold px-2 py-0.5 border border-gold">DEMOCRACIA_DEBIL</span>
-                </div>
-                <canvas id="chaosCanvas" width="600" height="140" style="height:140px; width:100%"></canvas>
-                <div class="grid grid-cols-3 gap-3 my-4 text-center">
-                    <div><span class="text-gray-500 text-[9px]">H-INDEX</span><br><span id="hindex-val" class="text-gold font-bold">0.00</span></div>
-                    <div><span class="text-gray-500 text-[9px]">CHAOS</span><br><span id="chaos-val" class="text-red-500 font-bold">0.00</span></div>
-                    <div><span class="text-gray-500 text-[9px]">CRISIS</span><br><span id="crisis-val" class="text-gold font-bold">0</span></div>
-                </div>
-            </div>
-            <div class="space-y-2 mt-2">
-                <button onclick="triggerAction('subir_iva')" class="w-full bg-[#111] hover:bg-[#1a1a1a] border border-[#333] text-gold font-bold py-2 text-[10px]">EJECUTAR: SUBIR IVA</button>
-                <button onclick="triggerAction('recortar_sanidad')" class="w-full bg-[#111] hover:bg-[#1a1a1a] border border-[#333] text-gold font-bold py-2 text-[10px]">EJECUTAR: RECORTE SANIDAD</button>
-                <button onclick="triggerAction('ejecutar_golpe')" class="w-full bg-red-950 hover:bg-red-900 border border-red-800 text-white font-bold py-2 text-[10px]">FORZAR: GOLPE DE ESTADO</button>
-            </div>
-        </div>
-
-        <!-- COLUMNA 3: LIFE OS (DATOS REALES) -->
-        <div class="panel-military p-4">
-            <div class="border-b border-[#222] pb-2 mb-4 text-gold font-bold">03 // LIFE OS · OPERADOR LOCAL</div>
-            <div class="space-y-2 text-[11px]">
-                <div><span class="text-gray-500">MUNICIPIO:</span> <span class="text-white font-bold">Tàrrega</span></div>
-                <div><span class="text-gray-500">PADRÓN:</span> <span id="padron-val" class="text-red-500 font-bold">Pendiente Presencial</span></div>
-                <div><span class="text-gray-500">AYUDAS SOLICITADAS:</span> <span class="text-white">RGC+IMV+Alquiler</span></div>
-                <div class="border-t border-[#222] pt-2 mt-2">
-                    <span class="text-gray-500">ALQUILER REAL:</span> <span id="alquiler-val" class="text-gold font-bold">368.45€</span><br>
-                    <span class="text-gray-500">SUMINISTROS:</span> <span class="text-white font-bold">15.00€</span>
-                </div>
-                <div class="border-t border-[#222] pt-2 mt-1">
-                    <span class="text-gray-500">TERRARIO SEFA:</span> <span id="sefa-val" class="text-green-500">Monitoreando</span><br>
-                    <span class="text-gray-500">ASSETS TATTOO:</span> <span id="tattoos-val" class="text-white">48</span><br>
-                    <span class="text-gray-500">PRECIO BASE (XMR):</span> <span id="xmr-val" class="text-gold">0.15</span>
+                <div class="text-gold" style="font-size: 9px; margin-bottom: 6px;">DISPOSITIVOS CONECTADOS</div>
+                <div style="background:#050505; border:1px solid #1a1a1a; padding: 8px;">
+                    <div class="flex-between"><span>Sonda Lampropeltis:</span><span class="text-green-500">ONLINE</span></div>
+                    <div class="flex-between"><span>Cámara Terrario:</span><span class="text-gold blink">STREAMING</span></div>
+                    <div class="flex-between"><span>API Core:</span><span id="api-status" style="color:#DC2626;">OFFLINE(SIM)</span></div>
                 </div>
             </div>
         </div>
-    </main>
 
-    <!-- FOOTER CON ESTADO DE RED -->
-    <footer class="w-full text-center text-[9px] text-gray-700 border-t border-[#222] pt-3 font-mono flex justify-between">
-        <span>API: <span id="latency">-- ms</span></span>
-        <span>WS VOICE: <span id="ws-status" class="text-red-500">OFFLINE</span></span>
-        <span><span id="audio-status" class="text-green-500">⚡ GEIGER INACTIVO</span></span>
-    </footer>
+        <!-- COL 2: MAPA TÁCTICO VECTORIAL + SISMÓGRAFO -->
+        <div class="panel" style="grid-column: span 2;">
+            <div class="panel-header">
+                <span class="text-gold">[02_MAPA_TÁCTICO]</span>
+                <span id="regime-badge" class="text-gold" style="border:1px solid #D4AF37; padding:0 6px;">DEMOCRACIA_DEBIL</span>
+            </div>
+            <!-- canvas mapa vectorial -->
+            <div style="position: relative; margin-bottom: 12px;">
+                <canvas id="mapCanvas" width="600" height="220" style="width:100%; height:auto; background:#000;"></canvas>
+                <div style="position: absolute; bottom: 6px; left: 6px; font-size: 7px; color:#444;">COORD_VIRTUAL: <span id="coord-label">41.648N 1.141E</span></div>
+                <div style="position: absolute; bottom: 6px; right: 6px; font-size: 8px;">CAPITAL: <span id="visual-capital" class="text-gold">0.00€</span></div>
+            </div>
+            <!-- sismógrafo de caos -->
+            <div style="margin-bottom: 8px;">
+                <div class="flex-between"><span class="text-gold" style="font-size:9px;">REGISTRO SISMÓGRAFO</span><span id="chaos-indicator" style="color:#D4AF37;">CHAOS: 0.55</span></div>
+                <canvas id="seismoCanvas" width="600" height="80" style="width:100%; height:80px; background:#000;"></canvas>
+            </div>
+            <!-- métricas rápidas -->
+            <div class="grid-3cols" style="gap:8px;">
+                <div><span style="color:#666;">BRENT</span><br><span id="brent-val" class="text-gold">84.52 USD</span></div>
+                <div><span style="color:#666;">ORO FED</span><br><span id="gold-val" class="text-gold">8,133.5 TONS</span></div>
+                <div><span style="color:#666;">H-INDEX</span><br><span id="hindex-val" class="text-gold">7.42</span></div>
+            </div>
+            <hr>
+            <div class="grid-4cols" style="gap:6px;">
+                <button id="btn-ormuz">BLOQUEAR ORMUZ</button>
+                <button id="btn-suez">DESVIAR SUEZ</button>
+                <button id="btn-fort">RAID FORT KNOX</button>
+                <button id="btn-shutdown" style="border-color:#DC2626; color:#DC2626;">APAGAR NÚCLEO</button>
+            </div>
+        </div>
+
+        <!-- COL 3: MÓDULO GUERRA + IA + FEED -->
+        <div class="panel">
+            <div class="panel-header">
+                <span class="text-gold">[03_IA_CONSEJERO]</span>
+                <span style="font-size:8px; border:1px solid #D4AF37; padding:0 4px;">GEMINI_SECURE</span>
+            </div>
+            <div id="ai-response" class="log-area" style="height: 100px; margin-bottom: 8px;">
+                &gt; Sistema listo. Introduce consulta táctica.
+            </div>
+            <div class="flex-between" style="gap:6px;">
+                <input type="text" id="ai-query" placeholder="Pregunta estrategia..." style="flex-grow:1;">
+                <button id="ai-send" style="width: auto;">ENVIAR</button>
+            </div>
+            <hr>
+            <div class="text-gold" style="font-size:9px; margin: 8px 0 4px;">REALITY FEED</div>
+            <div id="news-feed" class="log-area" style="height: 120px;">
+                <div class="text-dim">[SYS] Esperando datos del BOE...</div>
+            </div>
+            <hr>
+            <div class="text-gold" style="font-size:9px; margin-bottom:6px;">ACCIONES EXTRACCIÓN</div>
+            <button id="vote-iva" style="width:100%; margin-bottom:4px;">01 // FORZAR AUSTERIDAD (IVA)</button>
+            <button id="vote-sanidad" style="width:100%; margin-bottom:4px;">02 // RECORTE SANIDAD</button>
+            <button id="vote-golpe" style="width:100%; border-color:#DC2626; color:#DC2626;">03 // GOLPE FINANCIERO</button>
+        </div>
+    </div>
+
+    <!-- TERMINAL SSH SIMULADA -->
+    <div class="panel" style="margin-bottom: 12px;">
+        <div class="panel-header">
+            <span class="text-gold">[04_SSH_UPLINK_TERMINAL]</span>
+            <span class="text-dim">comandos: help, status, scan, sefa, exploit [nodo], auth [key]</span>
+        </div>
+        <div id="terminal-output" class="log-area" style="height: 90px; background:#000; color:#0f0;">
+            <div>MÁQUINA_DE_GUERRA CLI v6.12</div>
+            <div>Sesión segura establecida. Escribe 'help'.</div>
+        </div>
+        <div class="flex-between" style="margin-top: 6px;">
+            <span style="color:#0f0;">root@tarrega:~#</span>
+            <input type="text" id="terminal-input" placeholder="comando..." style="flex-grow:1; margin-left:6px; background:#000; color:#0f0;">
+        </div>
+    </div>
+
+    <!-- FOOTER: GEIGER Y TICKER -->
+    <div class="flex-between" style="border-top:1px solid #222; padding-top: 8px; font-size:9px;">
+        <div><span class="text-dim">▲ TICKER:</span> <span id="ticker-text" class="text-gold">Esperando firma criptográfica...</span></div>
+        <div class="flex-between" style="gap:12px;">
+            <span>PING: <span id="latency" class="text-gold">-- ms</span></span>
+            <span>GEIGER: <span id="geiger-status" class="text-dim">INACTIVO</span></span>
+            <button id="audio-btn" style="background:#D4AF37; color:#000; padding:2px 8px;">ACTIVAR GEIGER</button>
+        </div>
+    </div>
 
     <script>
-        // ---------- VARIABLES GLOBALES ----------
-        const API_URL = `http://${window.location.hostname}:5005/api/v1/state`;
-        const VOTE_URL = `http://${window.location.hostname}:5005/api/v1/simulation/vote`;
+        // ---------- CONFIGURACIÓN ----------
+        const API_STATE = window.location.hostname === 'localhost' ? 'http://localhost:5005/api/v1/state' : 'https://pais-en-obras.weembellz.workers.dev/api/v1/state';
+        const API_VOTE = window.location.hostname === 'localhost' ? 'http://localhost:5005/api/v1/simulation/vote' : 'https://pais-en-obras.weembellz.workers.dev/api/v1/simulation/vote';
+        let authorized = false;
+        let usingLocalSim = true;
         let audioCtx = null;
         let geigerInterval = null;
         let currentChaos = 0.55;
-        let ws = null;
+        let currentHIndex = 7.42;
+        let brentPrice = 84.52;
+        let goldReserves = 8133.5;
+        let capitalEur = 0.0;
+        let publicDebt = 113.2;
+        let unemployment = 11.7;
+        let corruption = 75.0;
+        let regime = "DEMOCRACIA_DEBIL";
+        let lastNews = "";
 
-        // ---------- RELOJ ----------
-        setInterval(() => {
-            const now = new Date();
-            document.getElementById('clock').innerText = now.toLocaleTimeString('es-ES', { hour12: false });
-        }, 200);
-
-        // ---------- SISMÓGRAFO (CANVAS) ----------
-        const canvas = document.getElementById('chaosCanvas');
-        const ctx = canvas.getContext('2d');
-        let history = Array(60).fill(0.5);
-        function resizeCanvas() {
-            const w = canvas.parentElement.clientWidth - 20;
-            canvas.width = w;
-            canvas.height = 140;
+        // ----- CANVAS MAPA VECTORIAL (simulación de nodos) -----
+        const mapCanvas = document.getElementById('mapCanvas');
+        const mapCtx = mapCanvas.getContext('2d');
+        let mapNodes = [
+            { name: "ORMUZ", x: 0.75, y: 0.55, active: true, flow: 100 },
+            { name: "SUEZ", x: 0.50, y: 0.35, active: true, flow: 100 },
+            { name: "TÀRREGA", x: 0.25, y: 0.25, active: true, flow: 40 },
+            { name: "FORT KNOX", x: 0.15, y: 0.70, active: true, flow: 100 }
+        ];
+        function resizeAndDrawMap() {
+            const w = mapCanvas.parentElement.clientWidth - 2;
+            const h = 220;
+            mapCanvas.width = w;
+            mapCanvas.height = h;
+            drawMap();
         }
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
-
-        function drawChaos(value) {
-            history.push(value);
-            if (history.length > 60) history.shift();
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.beginPath();
-            ctx.strokeStyle = '#D4AF37';
-            ctx.lineWidth = 1.5;
-            const step = canvas.width / (history.length - 1);
-            for (let i = 0; i < history.length; i++) {
-                const x = i * step;
-                const y = canvas.height - (history[i] * canvas.height);
-                if (i === 0) ctx.moveTo(x, y);
-                else ctx.lineTo(x, y);
+        function drawMap() {
+            if (!mapCtx) return;
+            const w = mapCanvas.width, h = mapCanvas.height;
+            mapCtx.fillStyle = '#000000';
+            mapCtx.fillRect(0, 0, w, h);
+            // grid sutil
+            mapCtx.strokeStyle = 'rgba(212,175,55,0.03)';
+            mapCtx.lineWidth = 1;
+            for (let i=0; i<w; i+=30) { mapCtx.beginPath(); mapCtx.moveTo(i,0); mapCtx.lineTo(i,h); mapCtx.stroke(); }
+            for (let i=0; i<h; i+=30) { mapCtx.beginPath(); mapCtx.moveTo(0,i); mapCtx.lineTo(w,i); mapCtx.stroke(); }
+            // líneas entre nodos
+            for (let i=0; i<mapNodes.length; i++) {
+                let n1 = mapNodes[i];
+                let n2 = mapNodes[(i+1)%mapNodes.length];
+                let x1 = n1.x * w, y1 = n1.y * h;
+                let x2 = n2.x * w, y2 = n2.y * h;
+                mapCtx.beginPath();
+                mapCtx.strokeStyle = (n1.active && n2.active) ? 'rgba(212,175,55,0.4)' : 'rgba(220,38,38,0.3)';
+                mapCtx.moveTo(x1,y1); mapCtx.lineTo(x2,y2); mapCtx.stroke();
+                // nodo
+                mapCtx.fillStyle = '#000';
+                mapCtx.fillRect(x1-5, y1-5, 10, 10);
+                mapCtx.strokeStyle = n1.active ? '#D4AF37' : '#DC2626';
+                mapCtx.strokeRect(x1-5, y1-5, 10, 10);
+                mapCtx.fillStyle = n1.active ? '#FFF' : '#DC2626';
+                mapCtx.font = '8px monospace';
+                mapCtx.fillText(`${n1.name} [${n1.flow}%]`, x1+6, y1+2);
+                // partícula dinámica
+                if (n1.active) {
+                    let t = (Date.now() % 2000) / 2000;
+                    let fx = x1 + (x2-x1)*t;
+                    let fy = y1 + (y2-y1)*t;
+                    mapCtx.fillStyle = '#D4AF37';
+                    mapCtx.fillRect(fx-2, fy-2, 4, 4);
+                }
             }
-            ctx.stroke();
         }
-
-        // ---------- AUDIO GEIGER (OPCIONAL) ----------
-        function initAudio() {
-            if (audioCtx) return;
-            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            function geigerClick() {
-                if (!audioCtx) return;
-                const now = audioCtx.currentTime;
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
-                osc.type = 'sine';
-                osc.frequency.value = 1200;
-                gain.gain.setValueAtTime(0.06, now);
-                gain.gain.exponentialRampToValueAtTime(0.00001, now + 0.08);
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-                osc.start();
-                osc.stop(now + 0.08);
+        window.addEventListener('resize', () => { resizeAndDrawMap(); });
+        setTimeout(resizeAndDrawMap, 100);
+        // interacción clic en mapa
+        mapCanvas.addEventListener('click', (e) => {
+            const rect = mapCanvas.getBoundingClientRect();
+            const scaleX = mapCanvas.width / rect.width;
+            const scaleY = mapCanvas.height / rect.height;
+            const mouseX = (e.clientX - rect.left) * scaleX;
+            const mouseY = (e.clientY - rect.top) * scaleY;
+            for (let i=0; i<mapNodes.length; i++) {
+                let node = mapNodes[i];
+                let nx = node.x * mapCanvas.width, ny = node.y * mapCanvas.height;
+                let dist = Math.hypot(mouseX - nx, mouseY - ny);
+                if (dist < 15) {
+                    node.active = !node.active;
+                    node.flow = node.active ? 100 : 0;
+                    if (!node.active) currentChaos = Math.min(0.99, currentChaos+0.1);
+                    else currentChaos = Math.max(0.1, currentChaos-0.05);
+                    drawMap();
+                    updateUI();
+                    addLog(`Nodo ${node.name} ${node.active ? 'restaurado' : 'bloqueado'}`);
+                    if (!usingLocalSim) {
+                        let action = (node.name === 'ORMUZ') ? 'subir_iva' : (node.name === 'SUEZ') ? 'recortar_sanidad' : 'ejecutar_golpe';
+                        fetch(API_VOTE, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({voto_index:action})}).catch(e=>console.log);
+                    }
+                    break;
+                }
             }
-            function startGeiger() {
-                if (geigerInterval) clearInterval(geigerInterval);
-                const loop = () => {
-                    const delay = Math.max(200, Math.min(1500, 1500 - (currentChaos * 1200)));
-                    geigerClick();
-                    geigerInterval = setTimeout(loop, delay);
-                };
-                loop();
-            }
-            audioCtx.resume().then(() => {
-                document.getElementById('audio-status').innerHTML = '🔊 GEIGER ACTIVO';
-                startGeiger();
-            });
-        }
-        // Botón para activar audio (por políticas del navegador)
-        window.addEventListener('load', () => {
-            const btn = document.createElement('button');
-            btn.innerText = 'ACTIVAR GEIGER';
-            btn.style.position = 'fixed'; btn.style.bottom = '20px'; btn.style.right = '20px';
-            btn.style.zIndex = '9999'; btn.style.background = '#111'; btn.style.border = '1px solid #D4AF37';
-            btn.style.color = '#D4AF37'; btn.style.fontSize = '9px'; btn.style.padding = '4px 8px';
-            btn.onclick = () => { initAudio(); btn.remove(); };
-            document.body.appendChild(btn);
         });
 
-        // ---------- FETCH ESTADO ----------
+        // ----- SISMÓGRAFO -----
+        const seismoCanvas = document.getElementById('seismoCanvas');
+        const seismoCtx = seismoCanvas.getContext('2d');
+        let history = Array(80).fill(0.5);
+        function drawSeismo() {
+            const w = seismoCanvas.parentElement.clientWidth - 2;
+            const h = 80;
+            seismoCanvas.width = w; seismoCanvas.height = h;
+            seismoCtx.fillStyle = '#000'; seismoCtx.fillRect(0,0,w,h);
+            seismoCtx.strokeStyle = currentChaos > 0.75 ? '#DC2626' : '#D4AF37';
+            seismoCtx.lineWidth = 1;
+            history.push(currentChaos);
+            if (history.length > w) history.shift();
+            seismoCtx.beginPath();
+            for (let i=0; i<history.length; i++) {
+                let x = i;
+                let y = h - (history[i] * h);
+                if (i===0) seismoCtx.moveTo(x, y);
+                else seismoCtx.lineTo(x, y);
+            }
+            seismoCtx.stroke();
+            requestAnimationFrame(drawSeismo);
+        }
+        drawSeismo();
+
+        // ----- RELOJ -----
+        setInterval(() => {
+            let d = new Date();
+            document.getElementById('clock').innerText = d.toLocaleTimeString('es-ES', {hour12:false});
+        }, 200);
+
+        // ----- LOGS Y UI -----
+        function addLog(msg) {
+            const logDiv = document.getElementById('terminal-output');
+            let p = document.createElement('div');
+            p.innerHTML = `<span class="text-dim">[${new Date().toLocaleTimeString()}]</span> ${msg}`;
+            logDiv.appendChild(p);
+            logDiv.scrollTop = logDiv.scrollHeight;
+            if(logDiv.children.length > 30) logDiv.removeChild(logDiv.firstChild);
+            document.getElementById('ticker-text').innerText = msg.slice(0, 80);
+        }
+
+        function updateUI() {
+            document.getElementById('brent-val').innerText = brentPrice.toFixed(2) + ' USD';
+            document.getElementById('gold-val').innerText = goldReserves.toLocaleString() + ' TONS';
+            document.getElementById('hindex-val').innerText = currentHIndex.toFixed(2);
+            document.getElementById('chaos-indicator').innerHTML = `CHAOS: ${currentChaos.toFixed(2)}`;
+            document.getElementById('regime-badge').innerText = regime;
+            document.getElementById('capital-val').innerText = capitalEur.toFixed(2)+'€';
+            document.getElementById('visual-capital').innerText = capitalEur.toFixed(2)+'€';
+            // si el caos >0.75, resaltar
+            let stress = document.getElementById('chaos-indicator');
+            if(currentChaos>0.75) stress.style.color = '#DC2626';
+            else stress.style.color = '#D4AF37';
+        }
+
+        // ----- AUTENTICACIÓN -----
+        function checkAuth() {
+            let key = document.getElementById('private-key').value;
+            let statusDiv = document.getElementById('auth-status');
+            if(key.length >= 8) {
+                statusDiv.innerHTML = "FIRMA REGISTRADA // OPERACIONES DISPONIBLES";
+                statusDiv.style.color = "#D4AF37";
+                if(!authorized) {
+                    authorized = true;
+                    addLog("[AUTH] Licencia de extracción activada.");
+                }
+            } else {
+                statusDiv.innerHTML = "Esperando firma criptográfica...";
+                statusDiv.style.color = "#666";
+                authorized = false;
+            }
+        }
+
+        // ----- FETCH ESTADO DESDE API -----
         async function fetchState() {
             const start = performance.now();
             try {
-                const res = await fetch(API_URL);
-                const data = await res.json();
-                const latency = Math.round(performance.now() - start);
+                let res = await fetch(API_STATE);
+                let data = await res.json();
+                let latency = Math.round(performance.now() - start);
                 document.getElementById('latency').innerText = latency + ' ms';
-                if (data.success && data.world_state) {
-                    const w = data.world_state;
-                    // Métricas macro
-                    document.getElementById('deuda-val').innerText = w.economy.deuda_publica_pct + '%';
-                    document.getElementById('desempleo-val').innerText = w.economy.unemployment_rate_pct + '%';
-                    document.getElementById('aprobacion-val').innerText = w.economy.approval_rating_pct + '%';
-                    document.getElementById('corrupcion-val').innerText = w.economy.corruption_index_pct + '%';
-                    document.getElementById('hindex-val').innerText = w.world.h_index.toFixed(2);
-                    document.getElementById('chaos-val').innerText = w.world.chaos.toFixed(2);
-                    document.getElementById('crisis-val').innerText = w.economy.active_crises;
-                    document.getElementById('regimen-badge').innerText = w.economy.regimen_actual;
-                    currentChaos = w.world.chaos;
-                    drawChaos(currentChaos);
-
-                    // Life OS
-                    const lo = w.life_os;
-                    document.getElementById('padron-val').innerText = lo.operador_local.empadronamiento;
-                    document.getElementById('alquiler-val').innerText = lo.gastos_reales.alquiler_total_real.toFixed(2) + '€';
-                    document.getElementById('sefa-val').innerText = lo.terrario_sefa.status;
-                    document.getElementById('tattoos-val').innerText = lo.yield_tattoos.assets_count;
-                    document.getElementById('xmr-val').innerText = lo.yield_tattoos.precio_base_xmr.toFixed(3);
-
-                    // Feed de noticias
-                    const feedDiv = document.getElementById('feed-box');
-                    feedDiv.innerHTML = `<div class="border-l-2 border-gold pl-2 py-1">
-                        <div class="font-bold text-white text-[11px]">${w.news_feed.titular}</div>
-                        <div class="text-gray-400 text-[9px] mt-1">${w.news_feed.impacto}</div>
-                    </div>`;
+                if(data.success && data.world_state) {
+                    usingLocalSim = false;
+                    document.getElementById('api-status').innerHTML = 'ONLINE(CORE)';
+                    document.getElementById('api-status').style.color = '#D4AF37';
+                    let ws = data.world_state;
+                    currentChaos = ws.world.chaos;
+                    currentHIndex = ws.world.h_index;
+                    publicDebt = ws.economy.deuda_publica_pct;
+                    unemployment = ws.economy.unemployment_rate_pct;
+                    corruption = ws.economy.corruption_index_pct;
+                    regime = ws.economy.regimen_actual;
+                    capitalEur = ws.economy.capital_eur;
+                    brentPrice = 84.52 + (currentChaos - 0.55)*20;
+                    goldReserves = 8133.5 + (currentChaos - 0.55)*500;
+                    document.getElementById('life-rent').innerText = ws.life_os.gastos_reales.alquiler_total_real.toFixed(2)+'€';
+                    document.getElementById('life-padron').innerText = ws.life_os.operador_local.empadronamiento;
+                    document.getElementById('life-sefa').innerText = ws.life_os.terrario_sefa.status;
+                    document.getElementById('life-xmr').innerText = ws.life_os.yield_tattoos.precio_base_xmr.toFixed(3)+' XMR';
+                    if(ws.news_feed && ws.news_feed.titular && ws.news_feed.titular !== lastNews) {
+                        lastNews = ws.news_feed.titular;
+                        let newsDiv = document.getElementById('news-feed');
+                        newsDiv.innerHTML = `<div class="text-gold">[ALERTA] ${ws.news_feed.titular}</div><div class="text-dim">${ws.news_feed.impacto}</div>` + newsDiv.innerHTML;
+                        if(newsDiv.children.length > 5) newsDiv.removeChild(newsDiv.lastChild);
+                    }
+                    updateUI();
                 }
             } catch(e) {
-                document.getElementById('latency').innerText = 'ERR';
-                console.error(e);
+                if(!usingLocalSim) {
+                    usingLocalSim = true;
+                    document.getElementById('api-status').innerHTML = 'OFFLINE(SIM)';
+                    document.getElementById('api-status').style.color = '#DC2626';
+                    addLog("API offline, cambiando a simulación local.");
+                }
+                simulateLocal();
             }
         }
 
-        // ---------- ENVÍO DE VOTOS ----------
-        async function triggerAction(action) {
+        function simulateLocal() {
+            // ligeras oscilaciones
+            currentChaos = Math.max(0.1, Math.min(0.99, currentChaos + (Math.random()-0.5)*0.01));
+            currentHIndex = Math.max(0, Math.min(10, currentHIndex + (Math.random()-0.5)*0.05));
+            brentPrice += (Math.random()-0.5)*0.2;
+            goldReserves += (Math.random()-0.5)*3;
+            updateUI();
+        }
+
+        // ----- VOTOS Y ACCIONES -----
+        async function sendVote(action) {
+            if(!authorized) { addLog("ACCESO DENEGADO: necesita firma criptográfica."); return; }
+            addLog(`Enviando acción: ${action}`);
             try {
-                await fetch(VOTE_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ voto_index: action })
-                });
+                await fetch(API_VOTE, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({voto_index:action})});
                 setTimeout(fetchState, 500);
+            } catch(e) {
+                // simulación local
+                if(action === 'subir_iva') { capitalEur += 140; currentHIndex +=0.2; currentChaos +=0.05; addLog("[SIM] Austeridad aplicada."); }
+                else if(action === 'recortar_sanidad') { capitalEur += 320; currentChaos +=0.15; addLog("[SIM] Recorte ejecutado."); }
+                else if(action === 'ejecutar_golpe') { capitalEur += 1200; regime = "COLAPSO"; currentChaos=0.99; addLog("[SIM] Golpe financiero completado."); }
+                updateUI();
+            }
+        }
+
+        // ----- GEIGER AUDIO -----
+        function enableGeiger() {
+            if(audioCtx) return;
+            try {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                function click() {
+                    if(!audioCtx) return;
+                    let now = audioCtx.currentTime;
+                    let osc = audioCtx.createOscillator();
+                    let gain = audioCtx.createGain();
+                    osc.type = 'square';
+                    osc.frequency.value = 1200;
+                    gain.gain.setValueAtTime(0.05, now);
+                    gain.gain.exponentialRampToValueAtTime(0.00001, now+0.05);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(); osc.stop(now+0.05);
+                }
+                function loop() {
+                    let delay = Math.max(100, 1000 - (currentChaos*800));
+                    click();
+                    geigerInterval = setTimeout(loop, delay);
+                }
+                audioCtx.resume().then(()=>{
+                    document.getElementById('geiger-status').innerHTML = 'ACTIVO';
+                    document.getElementById('geiger-status').style.color = '#D4AF37';
+                    loop();
+                });
             } catch(e) { console.error(e); }
         }
 
-        // ---------- WEBSOCKET VOICE (ECO) ----------
-        function connectWS() {
-            const proto = location.protocol === 'https:' ? 'wss:' : 'ws:';
-            ws = new WebSocket(`${proto}//${location.host}/ws/v1/voice`);
-            ws.onopen = () => {
-                document.getElementById('ws-status').innerHTML = 'CONECTADO';
-                document.getElementById('ws-status').classList.remove('text-red-500');
-                document.getElementById('ws-status').classList.add('text-green-500');
-            };
-            ws.onclose = () => {
-                document.getElementById('ws-status').innerHTML = 'OFFLINE';
-                document.getElementById('ws-status').classList.add('text-red-500');
-                setTimeout(connectWS, 3000);
-            };
-            ws.onerror = () => console.error('WS error');
+        // ----- IA CONSULTA (Gemini opcional) -----
+        async function askGemini() {
+            let query = document.getElementById('ai-query').value.trim();
+            if(!query) return;
+            let responseDiv = document.getElementById('ai-response');
+            responseDiv.innerHTML = '<div class="text-dim">Consultando satélite táctico...</div>';
+            let apiKey = ''; // si no hay clave, simular respuesta
+            if(!apiKey) {
+                setTimeout(() => {
+                    responseDiv.innerHTML = `<div class="text-gold">[SIM] Análisis táctico: La deuda pública al ${publicDebt.toFixed(1)}% sugiere aplicar medidas de austeridad selectiva. El caos sistémico (${currentChaos.toFixed(2)}) incrementa la volatilidad del crudo.</div>`;
+                }, 800);
+                return;
+            }
+            try {
+                let url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+                let res = await fetch(url, {
+                    method:'POST',
+                    headers:{'Content-Type':'application/json'},
+                    body:JSON.stringify({
+                        contents:[{parts:[{text:query}]}],
+                        systemInstruction:{parts:[{text:"Eres un analista militar táctico. Responde en castellano, estilo conciso y frío, máximo 100 palabras."}]}
+                    })
+                });
+                let data = await res.json();
+                let text = data.candidates?.[0]?.content?.parts?.[0]?.text || "Error de enlace";
+                responseDiv.innerHTML = `<div class="text-gold">${text}</div>`;
+            } catch(e) { responseDiv.innerHTML = '<div class="text-critical">Error de comunicación satelital.</div>'; }
         }
 
-        // ---------- INICIO ----------
-        fetchState();
+        // ----- TERMINAL COMANDOS -----
+        function handleTerminal(e) {
+            if(e.key !== 'Enter') return;
+            let input = document.getElementById('terminal-input');
+            let cmd = input.value.trim();
+            input.value = '';
+            addLog(`> ${cmd}`);
+            let parts = cmd.toLowerCase().split(' ');
+            let output = '';
+            switch(parts[0]) {
+                case 'help': output = 'Comandos: status, scan, sefa, exploit [nodo], auth [clave]'; break;
+                case 'status': output = `Caos: ${currentChaos.toFixed(2)} | Deuda: ${publicDebt.toFixed(1)}% | Capital: ${capitalEur.toFixed(2)}€`; break;
+                case 'scan': output = 'Puertos: 5005 (API), 22 (SSH), 8080 (cámara)'; break;
+                case 'sefa': output = 'Terrario Sefa: 31.4°C, humedad 48%, alimentado hace 5 días.'; break;
+                case 'exploit': 
+                    let target = parts[1];
+                    let node = mapNodes.find(n => n.name.toLowerCase() === target);
+                    if(node) { node.active=false; node.flow=0; currentChaos+=0.1; drawMap(); output=`Nodo ${target} bloqueado. Caos +0.1`; }
+                    else output = `Nodo no encontrado: ${target}`;
+                    break;
+                case 'auth':
+                    if(parts[1]) { document.getElementById('private-key').value = parts[1]; checkAuth(); output = 'Clave ingresada.'; }
+                    else output = 'Uso: auth [clave]';
+                    break;
+                default: output = 'Comando no reconocido. Use help.';
+            }
+            if(output) addLog(output);
+        }
+
+        // ----- EVENTOS UI -----
+        document.getElementById('private-key').addEventListener('keyup', checkAuth);
+        document.getElementById('vote-iva').addEventListener('click', ()=>sendVote('subir_iva'));
+        document.getElementById('vote-sanidad').addEventListener('click', ()=>sendVote('recortar_sanidad'));
+        document.getElementById('vote-golpe').addEventListener('click', ()=>sendVote('ejecutar_golpe'));
+        document.getElementById('btn-ormuz').addEventListener('click', ()=>sendVote('subir_iva'));
+        document.getElementById('btn-suez').addEventListener('click', ()=>sendVote('recortar_sanidad'));
+        document.getElementById('btn-fort').addEventListener('click', ()=>sendVote('ejecutar_golpe'));
+        document.getElementById('btn-shutdown').addEventListener('click', ()=>{ addLog("APAGADO DE EMERGENCIA"); currentChaos=0.99; regime="COLAPSO"; updateUI(); });
+        document.getElementById('audio-btn').addEventListener('click', enableGeiger);
+        document.getElementById('ai-send').addEventListener('click', askGemini);
+        document.getElementById('terminal-input').addEventListener('keypress', handleTerminal);
+        // polling
         setInterval(fetchState, 3000);
-        connectWS();
+        fetchState();
+        addLog("Sistema operativo v7.2 cargado. Esperando firma...");
+        resizeAndDrawMap();
     </script>
 </body>
 </html>
