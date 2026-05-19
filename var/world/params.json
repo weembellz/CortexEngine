@@ -1,41 +1,6 @@
 {
-  "timestamp": "2026-05-18T21:58:18.673496+00:00",
-  "world": {
-    "h_index": 7.62,
-    "chaos": 1.0,
-    "gravity": 9.81,
-    "fog_density": 0.45
-  },
-  "economy": {
-    "capital_eur": 0,
-    "active_crises": 1,
-    "deuda_publica_pct": 111.7,
-    "unemployment_rate_pct": 11.7,
-    "corruption_index_pct": 75.0,
-    "regimen_actual": "COLAPSO_SISTEMICO"
-  },
-  "life_os": {
-    "operador_local": {
-      "municipio": "Tarrega",
-      "empadronamiento": "Pendiente Presencial",
-      "cobertura_solicitada": "RGC+IMV+Ayuda Alquiler"
-    },
-    "gastos_reales": {
-      "alquiler_total_real": 368.45
-    },
-    "terrario_sefa": {
-      "status": "ACTIVO",
-      "especie": "Lampropeltis californiae",
-      "temperatura_sonda_c": 25.0,
-      "humedad_sonda_pct": 56.0
-    },
-    "yield_tattoos": {
-      "assets_count": 48,
-      "precio_base_xmr": 0.15
-    }
-  },
-  "news_feed": {
-    "titular": "GOLPE DE ESTADO",
-    "impacto": "Sistema en colapso"
-  }
+  "system": { "status": "OPERATIONAL", "version": "1.0.0" },
+  "simulation": { "chaos_index": 0.55, "alert_level": "MONITOREANDO" },
+  "capital": { "fiat_eur": 0.0, "crypto_xmr": 0.15, "subvenciones_detectadas": 0 },
+  "personal": { "autonomo_status": "CESE_ACTIVIDAD" }
 }
